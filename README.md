@@ -1,7 +1,7 @@
 # Criminal Justice Information Services (CJIS) Security Policy
 
 [![Build Status](https://travis-ci.org/RedHatOfficial/ansible-rhel7-cjis-role.svg?branch=master)](https://travis-ci.org/RedHatOfficial/ansible-rhel7-cjis-role)
-[![Ansible Role](https://img.shields.io/ansible/role/29937.svg)](https://galaxy.ansible.com/RedHatOfficial/rhel7-cjis-role)
+[![Ansible Role](https://img.shields.io/ansible/role/29970.svg)](https://galaxy.ansible.com/RedHatOfficial/rhel7-cjis)
 [![GitHub release](https://img.shields.io/github/release/RedHatOfficial/ansible-rhel7-cjis-role.svg)](https://github.com/RedHatOfficial/ansible-rhel7-cjis-role/releases/latest)
 
 Ansible remediation role for profile cjis
