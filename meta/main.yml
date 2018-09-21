@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: rhel7-cjis-role
   author: SCAP Security Guide development team
   description: Criminal Justice Information Services (CJIS) Security Policy
   company: "Red Hat, Inc."

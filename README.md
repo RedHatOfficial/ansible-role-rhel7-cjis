@@ -1,4 +1,4 @@
-# United States Government Configuration Baseline
+# Criminal Justice Information Services (CJIS) Security Policy
 
 [![Build Status](https://travis-ci.org/RedHatOfficial/ansible-rhel7-cjis-role.svg?branch=master)](https://travis-ci.org/RedHatOfficial/ansible-rhel7-cjis-role)
 [![Ansible Role](https://img.shields.io/ansible/role/29937.svg)](https://galaxy.ansible.com/RedHatOfficial/rhel7-cjis-role)
