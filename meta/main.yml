@@ -1,8 +1,8 @@
 galaxy_info:
-  role_name: rhel7-cjis-role
+  role_name: rhel7_cjis
   author: SCAP Security Guide development team
   description: Criminal Justice Information Services (CJIS) Security Policy
-  company: "Red Hat, Inc."
+  company: Red Hat, Inc.
 
   issue_tracker_url: https://github.com/OpenSCAP/scap-security-guide/issues
 

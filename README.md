@@ -41,13 +41,13 @@ N/A
 
 # Example Playbook
 
-Run `ansible-galaxy install RedHatOfficial.rhel7-role-cjis` to
+Run `ansible-galaxy install RedHatOfficial.rhel7-cjis` to
 download and install the role. Then you can use the following playbook snippet.
 
 
     - hosts: all
       roles:
-         - { role: RedHatOfficial.rhel7-role-cjis }
+         - { role: RedHatOfficial.rhel7-cjis }
 
 
 Then first check the playbook using (on the localhost):
