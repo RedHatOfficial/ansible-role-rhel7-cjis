@@ -1,6 +1,6 @@
 galaxy_info:
   author: SCAP Security Guide development team
-  description: United States Government Configuration Baseline
+  description: Criminal Justice Information Services (CJIS) Security Policy
   company: "Red Hat, Inc."
 
   issue_tracker_url: https://github.com/OpenSCAP/scap-security-guide/issues
