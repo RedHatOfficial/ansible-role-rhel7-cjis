@@ -1,5 +1,5 @@
 ---
-# defaults file for rhel7-role-cjis
+# defaults file for rhel7_cjis
 
 account_disable_post_pw_expiration: true
 accounts_max_concurrent_login_sessions: true
@@ -66,8 +66,10 @@ medium_complexity: true
 medium_disruption: true
 medium_severity: true
 no_empty_passwords: true
+no_reboot_needed: true
 package_aide_installed: true
 patch_strategy: true
+reboot_required: true
 restrict_strategy: true
 rpm_verify_hashes: true
 rpm_verify_permissions: true
