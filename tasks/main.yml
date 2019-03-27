@@ -1883,6 +1883,7 @@
   with_items:
   - '{{ files_result.results }}'
   when:
+  - files_result.results is defined
   - item.matched == 0
   - ansible_virtualization_role != "guest" or ansible_virtualization_type != "docker"
   - '{{ no_reboot_needed | bool }}'
