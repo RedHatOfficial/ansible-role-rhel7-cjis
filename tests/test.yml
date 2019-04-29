@@ -3,4 +3,4 @@
   connection: local
   become: true
   roles:
-    - rhel7-cjis-role
+    - ansible-role-rhel7-cjis
