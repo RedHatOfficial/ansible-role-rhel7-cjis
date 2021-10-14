@@ -1,6 +1,5 @@
 galaxy_info:
   role_name: rhel7_cjis
-  namespace: redhatofficial
   author: ComplianceAsCode development team
   description: Criminal Justice Information Services (CJIS) Security Policy
 
@@ -15,19 +14,8 @@ galaxy_info:
     versions:
     - 7
 
-  galaxy_tags:
-  - system
-  - hardening
-  - openscap
-  - ssg
-  - scap
-  - security
-  - compliance
-  - complianceascode
-  - redhatofficial
-  - redhat
-  - rhel7
-  - cjis
+  galaxy_tags: [system, hardening, openscap, ssg, scap, security, compliance, complianceascode,
+  redhatofficial, redhat, rhel7, cjis]
 
 
 dependencies: []
