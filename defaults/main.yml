@@ -18,8 +18,8 @@ sysctl_net_ipv4_conf_default_accept_redirects_value: '0'
 sysctl_net_ipv4_conf_default_accept_source_route_value: '0'
 sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value: '1'
 sysctl_net_ipv4_tcp_syncookies_value: '1'
-sshd_listening_port: '22'
 sshd_idle_timeout_value: '1800'
+sshd_listening_port: '22'
 sshd_approved_ciphers: aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc,rijndael-cbc@lysator.liu.se
 account_disable_post_pw_expiration: true
 accounts_max_concurrent_login_sessions: true
