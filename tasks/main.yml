@@ -343,6 +343,7 @@
   tags:
   - CCE-27096-7
   - CJIS-5.10.1.3
+  - DISA-STIG-RHEL-07-020029
   - NIST-800-53-CM-6(a)
   - PCI-DSS-Req-11.5
   - enable_strategy
@@ -1424,16 +1425,16 @@
   - NIST-800-53-SI-2(c)
   - PCI-DSS-Req-6.2
   - high_disruption
-  - high_severity
   - low_complexity
+  - medium_severity
   - patch_strategy
   - reboot_required
   - security_patches_up_to_date
   - skip_ansible_lint
   when:
   - high_disruption | bool
-  - high_severity | bool
   - low_complexity | bool
+  - medium_severity | bool
   - patch_strategy | bool
   - reboot_required | bool
   - security_patches_up_to_date | bool
@@ -2528,7 +2529,7 @@
   - reboot_required
   - restrict_strategy
 
-- name: Update bootloader menu
+- name: Update grub defaults and the bootloader menu
   command: /sbin/grubby --update-kernel=ALL --args="audit=1"
   when:
   - grub2_audit_argument | bool
@@ -5829,7 +5830,7 @@
   tags:
   - CCE-27393-8
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030420
+  - DISA-STIG-RHEL-07-030410
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -5863,7 +5864,7 @@
   tags:
   - CCE-27393-8
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030420
+  - DISA-STIG-RHEL-07-030410
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -5982,7 +5983,7 @@
   tags:
   - CCE-27393-8
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030420
+  - DISA-STIG-RHEL-07-030410
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -6102,7 +6103,7 @@
   tags:
   - CCE-27393-8
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030420
+  - DISA-STIG-RHEL-07-030410
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -6121,7 +6122,7 @@
   tags:
   - CCE-27388-8
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030430
+  - DISA-STIG-RHEL-07-030410
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -6155,7 +6156,7 @@
   tags:
   - CCE-27388-8
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030430
+  - DISA-STIG-RHEL-07-030410
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -6274,7 +6275,7 @@
   tags:
   - CCE-27388-8
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030430
+  - DISA-STIG-RHEL-07-030410
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -6394,7 +6395,7 @@
   tags:
   - CCE-27388-8
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030430
+  - DISA-STIG-RHEL-07-030410
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -6413,7 +6414,7 @@
   tags:
   - CCE-27356-5
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030380
+  - DISA-STIG-RHEL-07-030370
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -6447,7 +6448,7 @@
   tags:
   - CCE-27356-5
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030380
+  - DISA-STIG-RHEL-07-030370
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -6568,7 +6569,7 @@
   tags:
   - CCE-27356-5
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030380
+  - DISA-STIG-RHEL-07-030370
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -6690,7 +6691,7 @@
   tags:
   - CCE-27356-5
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030380
+  - DISA-STIG-RHEL-07-030370
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -6709,7 +6710,7 @@
   tags:
   - CCE-27387-0
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030400
+  - DISA-STIG-RHEL-07-030370
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -6743,7 +6744,7 @@
   tags:
   - CCE-27387-0
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030400
+  - DISA-STIG-RHEL-07-030370
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -6864,7 +6865,7 @@
   tags:
   - CCE-27387-0
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030400
+  - DISA-STIG-RHEL-07-030370
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -6986,7 +6987,7 @@
   tags:
   - CCE-27387-0
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030400
+  - DISA-STIG-RHEL-07-030370
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -7005,7 +7006,7 @@
   tags:
   - CCE-27353-2
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030480
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -7039,7 +7040,7 @@
   tags:
   - CCE-27353-2
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030480
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -7164,7 +7165,7 @@
   tags:
   - CCE-27353-2
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030480
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -7290,7 +7291,7 @@
   tags:
   - CCE-27353-2
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030480
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -7309,7 +7310,7 @@
   tags:
   - CCE-27389-6
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030450
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -7343,7 +7344,7 @@
   tags:
   - CCE-27389-6
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030450
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -7468,7 +7469,7 @@
   tags:
   - CCE-27389-6
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030450
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -7594,7 +7595,7 @@
   tags:
   - CCE-27389-6
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030450
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -7613,7 +7614,7 @@
   tags:
   - CCE-27083-5
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030390
+  - DISA-STIG-RHEL-07-030370
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -7647,7 +7648,7 @@
   tags:
   - CCE-27083-5
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030390
+  - DISA-STIG-RHEL-07-030370
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -7768,7 +7769,7 @@
   tags:
   - CCE-27083-5
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030390
+  - DISA-STIG-RHEL-07-030370
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -7890,7 +7891,7 @@
   tags:
   - CCE-27083-5
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030390
+  - DISA-STIG-RHEL-07-030370
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -7909,7 +7910,7 @@
   tags:
   - CCE-27410-0
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030490
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -7943,7 +7944,7 @@
   tags:
   - CCE-27410-0
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030490
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -8068,7 +8069,7 @@
   tags:
   - CCE-27410-0
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030490
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -8194,7 +8195,7 @@
   tags:
   - CCE-27410-0
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030490
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -8213,7 +8214,7 @@
   tags:
   - CCE-27280-7
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030460
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -8247,7 +8248,7 @@
   tags:
   - CCE-27280-7
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030460
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -8372,7 +8373,7 @@
   tags:
   - CCE-27280-7
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030460
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -8498,7 +8499,7 @@
   tags:
   - CCE-27280-7
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030460
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -8517,7 +8518,7 @@
   tags:
   - CCE-27367-2
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030470
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -8551,7 +8552,7 @@
   tags:
   - CCE-27367-2
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030470
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -8676,7 +8677,7 @@
   tags:
   - CCE-27367-2
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030470
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -8802,7 +8803,7 @@
   tags:
   - CCE-27367-2
   - CJIS-5.4.1.1
-  - DISA-STIG-RHEL-07-030470
+  - DISA-STIG-RHEL-07-030440
   - NIST-800-171-3.1.7
   - NIST-800-53-AU-12(c)
   - NIST-800-53-AU-2(d)
@@ -12448,10 +12449,10 @@
   - medium_severity | bool
   - no_reboot_needed | bool
 
-- name: Ensure permission 0644 on /etc/group
+- name: Ensure permission u-xs,g-xws,o-xwt on /etc/group
   file:
     path: /etc/group
-    mode: '0644'
+    mode: u-xs,g-xws,o-xwt
   when:
   - configure_strategy | bool
   - file_permissions_etc_group | bool
@@ -12497,10 +12498,10 @@
   - medium_severity | bool
   - no_reboot_needed | bool
 
-- name: Ensure permission 0644 on /etc/passwd
+- name: Ensure permission u-xs,g-xws,o-xwt on /etc/passwd
   file:
     path: /etc/passwd
-    mode: '0644'
+    mode: u-xs,g-xws,o-xwt
   when:
   - configure_strategy | bool
   - file_permissions_etc_passwd | bool
@@ -12546,10 +12547,10 @@
   - medium_severity | bool
   - no_reboot_needed | bool
 
-- name: Ensure permission 0000 on /etc/shadow
+- name: Ensure permission u-xwrs,g-xwrs,o-xwrt on /etc/shadow
   file:
     path: /etc/shadow
-    mode: '0000'
+    mode: u-xwrs,g-xwrs,o-xwrt
   when:
   - configure_strategy | bool
   - file_permissions_etc_shadow | bool
@@ -12570,6 +12571,114 @@
   - low_disruption
   - medium_severity
   - no_reboot_needed
+
+- name: Set SSH Client Alive Count Max to zero
+  block:
+  - name: Check for duplicate values
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: false
+      regexp: (?i)^\s*ClientAliveCountMax\s+
+      state: absent
+    check_mode: true
+    changed_when: false
+    register: dupes
+  - name: Deduplicate values from /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: false
+      regexp: (?i)^\s*ClientAliveCountMax\s+
+      state: absent
+    when: dupes.found is defined and dupes.found > 1
+  - name: Insert correct line to /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*ClientAliveCountMax\s+
+      line: ClientAliveCountMax 0
+      state: present
+      insertbefore: ^[#\s]*Match
+      validate: /usr/sbin/sshd -t -f %s
+  when:
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
+  - sshd_set_keepalive_0 | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-83399-6
+  - CJIS-5.5.6
+  - DISA-STIG-RHEL-07-040340
+  - NIST-800-171-3.1.11
+  - NIST-800-53-AC-12
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-AC-2(5)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-SC-10
+  - PCI-DSS-Req-8.1.8
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - restrict_strategy
+  - sshd_set_keepalive_0
+
+- name: Set SSH Idle Timeout Interval
+  block:
+  - name: Check for duplicate values
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: false
+      regexp: (?i)^\s*ClientAliveInterval\s+
+      state: absent
+    check_mode: true
+    changed_when: false
+    register: dupes
+  - name: Deduplicate values from /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: false
+      regexp: (?i)^\s*ClientAliveInterval\s+
+      state: absent
+    when: dupes.found is defined and dupes.found > 1
+  - name: Insert correct line to /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*ClientAliveInterval\s+
+      line: ClientAliveInterval {{ sshd_idle_timeout_value }}
+      state: present
+      insertbefore: ^[#\s]*Match
+      validate: /usr/sbin/sshd -t -f %s
+  when:
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
+  - sshd_set_idle_timeout | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-27433-2
+  - CJIS-5.5.6
+  - DISA-STIG-RHEL-07-040320
+  - NIST-800-171-3.1.11
+  - NIST-800-53-AC-12
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-AC-2(5)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-SC-10
+  - PCI-DSS-Req-8.1.8
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - restrict_strategy
+  - sshd_set_idle_timeout
 
 - name: Disable Host-Based Authentication
   block:
@@ -12969,114 +13078,6 @@
   - no_reboot_needed
   - restrict_strategy
   - sshd_enable_warning_banner
-
-- name: Set SSH Idle Timeout Interval
-  block:
-  - name: Check for duplicate values
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: false
-      regexp: (?i)^\s*ClientAliveInterval\s+
-      state: absent
-    check_mode: true
-    changed_when: false
-    register: dupes
-  - name: Deduplicate values from /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: false
-      regexp: (?i)^\s*ClientAliveInterval\s+
-      state: absent
-    when: dupes.found is defined and dupes.found > 1
-  - name: Insert correct line to /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*ClientAliveInterval\s+
-      line: ClientAliveInterval {{ sshd_idle_timeout_value }}
-      state: present
-      insertbefore: ^[#\s]*Match
-      validate: /usr/sbin/sshd -t -f %s
-  when:
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - sshd_set_idle_timeout | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-27433-2
-  - CJIS-5.5.6
-  - DISA-STIG-RHEL-07-040320
-  - NIST-800-171-3.1.11
-  - NIST-800-53-AC-12
-  - NIST-800-53-AC-17(a)
-  - NIST-800-53-AC-17(a)
-  - NIST-800-53-AC-2(5)
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-SC-10
-  - PCI-DSS-Req-8.1.8
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
-  - sshd_set_idle_timeout
-
-- name: Set SSH Client Alive Count Max to zero
-  block:
-  - name: Check for duplicate values
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: false
-      regexp: (?i)^\s*ClientAliveCountMax\s+
-      state: absent
-    check_mode: true
-    changed_when: false
-    register: dupes
-  - name: Deduplicate values from /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: false
-      regexp: (?i)^\s*ClientAliveCountMax\s+
-      state: absent
-    when: dupes.found is defined and dupes.found > 1
-  - name: Insert correct line to /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*ClientAliveCountMax\s+
-      line: ClientAliveCountMax 0
-      state: present
-      insertbefore: ^[#\s]*Match
-      validate: /usr/sbin/sshd -t -f %s
-  when:
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - sshd_set_keepalive_0 | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-83399-6
-  - CJIS-5.5.6
-  - DISA-STIG-RHEL-07-040340
-  - NIST-800-171-3.1.11
-  - NIST-800-53-AC-12
-  - NIST-800-53-AC-17(a)
-  - NIST-800-53-AC-2(5)
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-SC-10
-  - PCI-DSS-Req-8.1.8
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
-  - sshd_set_keepalive_0
 
 - name: Use Only FIPS 140-2 Validated Ciphers
   block:
