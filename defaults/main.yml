@@ -65,6 +65,7 @@ DISA_STIG_RHEL_07_040640: true
 DISA_STIG_RHEL_07_040641: true
 DISA_STIG_RHEL_07_040650: true
 DISA_STIG_RHEL_07_040660: true
+DISA_STIG_RHEL_07_910055: true
 account_disable_post_pw_expiration: true
 accounts_max_concurrent_login_sessions: true
 accounts_minimum_age_login_defs: true
@@ -130,6 +131,7 @@ file_owner_grub2_cfg: true
 file_permissions_etc_group: true
 file_permissions_etc_passwd: true
 file_permissions_etc_shadow: true
+file_permissions_var_log_audit: true
 firewalld_sshd_port_enabled: true
 grub2_audit_argument: true
 high_complexity: true
