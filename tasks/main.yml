@@ -13440,7 +13440,7 @@
   lineinfile:
     create: true
     dest: /etc/modprobe.d/dccp.conf
-    regexp: dccp
+    regexp: install\s+dccp
     line: install dccp /bin/true
   when:
   - DISA_STIG_RHEL_07_020101 | bool
@@ -13502,7 +13502,7 @@
   lineinfile:
     create: true
     dest: /etc/modprobe.d/sctp.conf
-    regexp: sctp
+    regexp: install\s+sctp
     line: install sctp /bin/true
   when:
   - disable_strategy | bool
@@ -13560,7 +13560,7 @@
   lineinfile:
     create: true
     dest: /etc/modprobe.d/bluetooth.conf
-    regexp: bluetooth
+    regexp: install\s+bluetooth
     line: install bluetooth /bin/true
   when:
   - disable_strategy | bool
