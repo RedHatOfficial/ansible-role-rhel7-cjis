@@ -22,6 +22,7 @@ sshd_idle_timeout_value: '1800'
 firewalld_sshd_zone: public
 sshd_approved_ciphers: aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc,rijndael-cbc@lysator.liu.se
 DISA_STIG_RHEL_07_010010: true
+DISA_STIG_RHEL_07_010019: true
 DISA_STIG_RHEL_07_010020: true
 DISA_STIG_RHEL_07_010060: true
 DISA_STIG_RHEL_07_010070: true
