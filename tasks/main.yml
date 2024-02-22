@@ -50,40 +50,7 @@
   - no_reboot_needed
   - restrict_strategy
 
-- name: 'Set fact: Package manager reinstall command (dnf)'
-  set_fact:
-    package_manager_reinstall_cmd: dnf reinstall -y
-  when:
-  - DISA_STIG_RHEL_07_010020 | bool
-  - high_complexity | bool
-  - high_severity | bool
-  - medium_disruption | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - rpm_verify_hashes | bool
-  - ansible_distribution == "Fedora"
-  tags:
-  - CCE-27157-7
-  - CJIS-5.10.4.1
-  - DISA-STIG-RHEL-07-010020
-  - NIST-800-171-3.3.8
-  - NIST-800-171-3.4.1
-  - NIST-800-53-AU-9(3)
-  - NIST-800-53-CM-6(c)
-  - NIST-800-53-CM-6(d)
-  - NIST-800-53-SI-7
-  - NIST-800-53-SI-7(1)
-  - NIST-800-53-SI-7(6)
-  - PCI-DSS-Req-11.5
-  - PCI-DSSv4-11.5.2
-  - high_complexity
-  - high_severity
-  - medium_disruption
-  - no_reboot_needed
-  - restrict_strategy
-  - rpm_verify_hashes
-
-- name: 'Set fact: Package manager reinstall command (yum)'
+- name: 'Set fact: Package manager reinstall command'
   set_fact:
     package_manager_reinstall_cmd: yum reinstall -y
   when:
@@ -94,7 +61,7 @@
   - no_reboot_needed | bool
   - restrict_strategy | bool
   - rpm_verify_hashes | bool
-  - (ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "OracleLinux")
+  - ansible_distribution in [ "Fedora", "RedHat", "CentOS", "OracleLinux" ]
   tags:
   - CCE-27157-7
   - CJIS-5.10.4.1
@@ -1452,7 +1419,16 @@
     option: gpgcheck
     value: '1'
     no_extra_spaces: true
-  loop: '{{ repo_grep_results.stdout | regex_findall( ''(.+\.repo):\[(.+)\]\n?'' ) }}'
+  loop: '{{ repo_grep_results.stdout |regex_findall( ''(.+\.repo):\[(.+)\]\n?'' ) if repo_grep_results is not skipped else
+    []}}'
+  when:
+  - enable_strategy | bool
+  - ensure_gpgcheck_never_disabled | bool
+  - high_severity | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - no_reboot_needed | bool
+  - repo_grep_results is not skipped
   tags:
   - CCE-26876-3
   - CJIS-5.10.4.1
@@ -1474,13 +1450,6 @@
   - low_complexity
   - medium_disruption
   - no_reboot_needed
-  when:
-  - enable_strategy | bool
-  - ensure_gpgcheck_never_disabled | bool
-  - high_severity | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - no_reboot_needed | bool
 
 - name: Read permission of GPG key directory
   stat:
@@ -1580,7 +1549,9 @@
 
 - name: Set Fact - Valid fingerprints
   set_fact:
-    gpg_valid_fingerprints: ("567E347AD0044ADE55BA8A5F199E2F91FD431D51" "43A6E49C4A38F4BE9ABF2A5345689C882FA658E0")
+    gpg_valid_fingerprints:
+    - 567E347AD0044ADE55BA8A5F199E2F91FD431D51
+    - 43A6E49C4A38F4BE9ABF2A5345689C882FA658E0
   tags:
   - CCE-26957-1
   - CJIS-5.10.4.1
@@ -3081,7 +3052,7 @@
   - reboot_required
   - restrict_strategy
 
-- name: Add watch rule for  in /etc/audit/audit.rules
+- name: Add audit argument
   ansible.builtin.lineinfile:
     line: GRUB_CMDLINE_LINUX="audit=1 "
     state: present
@@ -3097,7 +3068,7 @@
   - restrict_strategy | bool
   - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
   - '"grub2-common" in ansible_facts.packages'
-  - argcheck.rc != 0 and linecheck.rc != 0
+  - argcheck is not skipped and linecheck is not skipped and argcheck.rc != 0 and linecheck.rc != 0
   tags:
   - CCE-27212-0
   - CJIS-5.4.1.1
@@ -3119,7 +3090,7 @@
 - name: Replace existing audit argument
   replace:
     path: /etc/default/grub
-    regexp: audit=\w+
+    regexp: audit=[a-zA-Z0-9,]+
     replace: audit=1
   when:
   - grub2_audit_argument | bool
@@ -3130,7 +3101,7 @@
   - restrict_strategy | bool
   - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
   - '"grub2-common" in ansible_facts.packages'
-  - argcheck.rc == 0 and linecheck.rc == 0
+  - argcheck is not skipped and linecheck is not skipped and argcheck.rc == 0 and linecheck.rc == 0
   tags:
   - CCE-27212-0
   - CJIS-5.4.1.1
@@ -3163,7 +3134,7 @@
   - restrict_strategy | bool
   - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
   - '"grub2-common" in ansible_facts.packages'
-  - argcheck.rc != 0 and linecheck.rc == 0
+  - argcheck is not skipped and linecheck is not skipped and argcheck.rc != 0 and linecheck.rc == 0
   tags:
   - CCE-27212-0
   - CJIS-5.4.1.1
@@ -6393,7 +6364,7 @@
   - restrict_strategy | bool
   - '"audit" in ansible_facts.packages'
   - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  - (log_file_exists.stdout | length > 0)
+  - log_file_exists is not skipped and (log_file_exists.stdout | length > 0)
   tags:
   - CCE-27205-4
   - CJIS-5.4.1.1
@@ -6424,7 +6395,7 @@
   - restrict_strategy | bool
   - '"audit" in ansible_facts.packages'
   - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  - (log_file_exists is undefined) or (log_file_exists.stdout | length == 0)
+  - (log_file_exists is skipped) or (log_file_exists is undefined) or (log_file_exists.stdout | length == 0)
   tags:
   - CCE-27205-4
   - CJIS-5.4.1.1
@@ -6455,7 +6426,7 @@
   - restrict_strategy | bool
   - '"audit" in ansible_facts.packages'
   - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  - (log_file_line.stdout is defined) and (log_file_line.stdout | length > 0)
+  - (log_file_exists is not skipped) and (log_file_line.stdout is defined) and (log_file_line.stdout | length > 0)
   tags:
   - CCE-27205-4
   - CJIS-5.4.1.1
@@ -10967,8 +10938,8 @@
 - name: Ensure auditd Collects Information on the Use of Privileged Commands - Set List of Privileged Commands Found in Eligible
     Mount Points
   ansible.builtin.set_fact:
-    privileged_commands: '{{( result_privileged_commands_search.results | map(attribute=''stdout_lines'') | select() | list
-      ) | sum(start=[]) }}'
+    privileged_commands: '{{ privileged_commands | default([]) + item.stdout_lines }}'
+  loop: '{{ result_privileged_commands_search.results }}'
   when:
   - audit_rules_privileged_commands | bool
   - configure_strategy | bool
@@ -10978,6 +10949,7 @@
   - no_reboot_needed | bool
   - '"audit" in ansible_facts.packages'
   - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - item is not skipped
   tags:
   - CCE-27437-3
   - CJIS-5.4.1.1
@@ -12511,7 +12483,7 @@
 - name: Configure auditd admin_space_left Action on Low Disk Space
   lineinfile:
     dest: /etc/audit/auditd.conf
-    line: admin_space_left_action = {{ var_auditd_admin_space_left_action }}
+    line: admin_space_left_action = {{ var_auditd_admin_space_left_action .split('|')[0] }}
     regexp: ^\s*admin_space_left_action\s*=\s*.*$
     state: present
     create: true
@@ -12739,7 +12711,7 @@
 - name: Configure auditd space_left Action on Low Disk Space
   lineinfile:
     dest: /etc/audit/auditd.conf
-    line: space_left_action = {{ var_auditd_space_left_action }}
+    line: space_left_action = {{ var_auditd_space_left_action.split('|')[0] }}
     regexp: ^\s*space_left_action\s*=\s*.*$
     state: present
     create: true
@@ -13728,7 +13700,7 @@
     create: true
     dest: /etc/modprobe.d/dccp.conf
     regexp: install\s+dccp
-    line: install dccp /bin/true
+    line: install dccp /bin/false
   when:
   - DISA_STIG_RHEL_07_020101 | bool
   - disable_strategy | bool
@@ -13792,7 +13764,7 @@
     create: true
     dest: /etc/modprobe.d/sctp.conf
     regexp: install\s+sctp
-    line: install sctp /bin/true
+    line: install sctp /bin/false
   when:
   - disable_strategy | bool
   - kernel_module_sctp_disabled | bool
@@ -13852,7 +13824,7 @@
     create: true
     dest: /etc/modprobe.d/bluetooth.conf
     regexp: install\s+bluetooth
-    line: install bluetooth /bin/true
+    line: install bluetooth /bin/false
   when:
   - disable_strategy | bool
   - kernel_module_bluetooth_disabled | bool
