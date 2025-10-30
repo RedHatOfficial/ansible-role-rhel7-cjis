@@ -1420,7 +1420,7 @@
     value: '1'
     no_extra_spaces: true
   loop: '{{ repo_grep_results.stdout |regex_findall( ''(.+\.repo):\[(.+)\]\n?'' ) if repo_grep_results is not skipped else
-    []}}'
+    [] }}'
   when:
   - enable_strategy | bool
   - ensure_gpgcheck_never_disabled | bool
@@ -1613,36 +1613,6 @@
   - medium_disruption
   - no_reboot_needed
   - restrict_strategy
-
-- name: Security patches are up to date
-  package:
-    name: '*'
-    state: latest
-  tags:
-  - CCE-26895-3
-  - CJIS-5.10.4.1
-  - DISA-STIG-RHEL-07-020260
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-SI-2(5)
-  - NIST-800-53-SI-2(c)
-  - PCI-DSS-Req-6.2
-  - PCI-DSSv4-6.3.3
-  - high_disruption
-  - low_complexity
-  - medium_severity
-  - patch_strategy
-  - reboot_required
-  - security_patches_up_to_date
-  - skip_ansible_lint
-  when:
-  - DISA_STIG_RHEL_07_020260 | bool
-  - high_disruption | bool
-  - low_complexity | bool
-  - medium_severity | bool
-  - patch_strategy | bool
-  - reboot_required | bool
-  - security_patches_up_to_date | bool
-  - skip_ansible_lint | bool
 
 - name: Gather the package facts
   package_facts:
@@ -2882,6 +2852,2259 @@
   package_facts:
     manager: auto
   tags:
+  - CCE-82023-3
+  - CJIS-5.5.2.2
+  - NIST-800-171-3.4.5
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-7.1
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_groupowner_grub2_cfg
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  when:
+  - configure_strategy | bool
+  - file_groupowner_grub2_cfg | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+
+- name: Test for existence /boot/grub2/grub.cfg
+  stat:
+    path: /boot/grub2/grub.cfg
+  register: file_exists
+  when:
+  - configure_strategy | bool
+  - file_groupowner_grub2_cfg | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - '"/boot/efi" not in ansible_mounts | map(attribute="mount") | list'
+  - '"grub2-common" in ansible_facts.packages'
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-82023-3
+  - CJIS-5.5.2.2
+  - NIST-800-171-3.4.5
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-7.1
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_groupowner_grub2_cfg
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Ensure group owner 0 on /boot/grub2/grub.cfg
+  file:
+    path: /boot/grub2/grub.cfg
+    group: '0'
+  when:
+  - configure_strategy | bool
+  - file_groupowner_grub2_cfg | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - '"/boot/efi" not in ansible_mounts | map(attribute="mount") | list'
+  - '"grub2-common" in ansible_facts.packages'
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - file_exists.stat is defined and file_exists.stat.exists
+  tags:
+  - CCE-82023-3
+  - CJIS-5.5.2.2
+  - NIST-800-171-3.4.5
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-7.1
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_groupowner_grub2_cfg
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Gather the package facts
+  package_facts:
+    manager: auto
+  tags:
+  - CCE-82026-6
+  - CJIS-5.5.2.2
+  - NIST-800-171-3.4.5
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-7.1
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_owner_grub2_cfg
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  when:
+  - configure_strategy | bool
+  - file_owner_grub2_cfg | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+
+- name: Test for existence /boot/grub2/grub.cfg
+  stat:
+    path: /boot/grub2/grub.cfg
+  register: file_exists
+  when:
+  - configure_strategy | bool
+  - file_owner_grub2_cfg | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - '"/boot/efi" not in ansible_mounts | map(attribute="mount") | list'
+  - '"grub2-common" in ansible_facts.packages'
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-82026-6
+  - CJIS-5.5.2.2
+  - NIST-800-171-3.4.5
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-7.1
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_owner_grub2_cfg
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Ensure owner 0 on /boot/grub2/grub.cfg
+  file:
+    path: /boot/grub2/grub.cfg
+    owner: '0'
+  when:
+  - configure_strategy | bool
+  - file_owner_grub2_cfg | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - '"/boot/efi" not in ansible_mounts | map(attribute="mount") | list'
+  - '"grub2-common" in ansible_facts.packages'
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - file_exists.stat is defined and file_exists.stat.exists
+  tags:
+  - CCE-82026-6
+  - CJIS-5.5.2.2
+  - NIST-800-171-3.4.5
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-7.1
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_owner_grub2_cfg
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Gather the package facts
+  package_facts:
+    manager: auto
+  tags:
+  - CCE-80998-8
+  - DISA-STIG-RHEL-07-040520
+  - NIST-800-171-3.1.3
+  - NIST-800-171-3.4.7
+  - NIST-800-53-AC-4
+  - NIST-800-53-CA-3(5)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-7(21)
+  - PCI-DSSv4-1.2.1
+  - enable_strategy
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - service_firewalld_enabled
+  when:
+  - DISA_STIG_RHEL_07_040520 | bool
+  - enable_strategy | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - service_firewalld_enabled | bool
+
+- name: Enable service firewalld
+  block:
+  - name: Gather the package facts
+    package_facts:
+      manager: auto
+  - name: Enable service firewalld
+    systemd:
+      name: firewalld
+      enabled: 'yes'
+      state: started
+      masked: 'no'
+    when:
+    - '"firewalld" in ansible_facts.packages'
+  when:
+  - DISA_STIG_RHEL_07_040520 | bool
+  - enable_strategy | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - service_firewalld_enabled | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - '"firewalld" in ansible_facts.packages'
+  tags:
+  - CCE-80998-8
+  - DISA-STIG-RHEL-07-040520
+  - NIST-800-171-3.1.3
+  - NIST-800-171-3.4.7
+  - NIST-800-53-AC-4
+  - NIST-800-53-CA-3(5)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-7(21)
+  - PCI-DSSv4-1.2.1
+  - enable_strategy
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - service_firewalld_enabled
+
+- name: List /etc/sysctl.d/*.conf files
+  find:
+    paths:
+    - /etc/sysctl.d/
+    - /run/sysctl.d/
+    - /usr/local/lib/sysctl.d/
+    contains: ^[\s]*net.ipv4.conf.all.accept_redirects.*$
+    patterns: '*.conf'
+    file_type: any
+  register: find_sysctl_d
+  when:
+  - DISA_STIG_RHEL_07_040641 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_conf_all_accept_redirects | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80158-9
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040641
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-7(a)
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_conf_all_accept_redirects
+
+- name: Comment out any occurrences of net.ipv4.conf.all.accept_redirects from config files
+  replace:
+    path: '{{ item.path }}'
+    regexp: ^[\s]*net.ipv4.conf.all.accept_redirects
+    replace: '#net.ipv4.conf.all.accept_redirects'
+  loop: '{{ find_sysctl_d.files }}'
+  when:
+  - DISA_STIG_RHEL_07_040641 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_conf_all_accept_redirects | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80158-9
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040641
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-7(a)
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_conf_all_accept_redirects
+
+- name: Ensure sysctl net.ipv4.conf.all.accept_redirects is set
+  sysctl:
+    name: net.ipv4.conf.all.accept_redirects
+    value: '{{ sysctl_net_ipv4_conf_all_accept_redirects_value }}'
+    sysctl_file: /etc/sysctl.conf
+    state: present
+    reload: true
+  when:
+  - DISA_STIG_RHEL_07_040641 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_conf_all_accept_redirects | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80158-9
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040641
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-7(a)
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_conf_all_accept_redirects
+
+- name: List /etc/sysctl.d/*.conf files
+  find:
+    paths:
+    - /etc/sysctl.d/
+    - /run/sysctl.d/
+    - /usr/local/lib/sysctl.d/
+    contains: ^[\s]*net.ipv4.conf.default.accept_redirects.*$
+    patterns: '*.conf'
+    file_type: any
+  register: find_sysctl_d
+  when:
+  - DISA_STIG_RHEL_07_040640 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_conf_default_accept_redirects | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80163-9
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040640
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-7(a)
+  - PCI-DSS-Req-1.4.3
+  - PCI-DSSv4-1.4.3
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_conf_default_accept_redirects
+
+- name: Comment out any occurrences of net.ipv4.conf.default.accept_redirects from config files
+  replace:
+    path: '{{ item.path }}'
+    regexp: ^[\s]*net.ipv4.conf.default.accept_redirects
+    replace: '#net.ipv4.conf.default.accept_redirects'
+  loop: '{{ find_sysctl_d.files }}'
+  when:
+  - DISA_STIG_RHEL_07_040640 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_conf_default_accept_redirects | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80163-9
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040640
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-7(a)
+  - PCI-DSS-Req-1.4.3
+  - PCI-DSSv4-1.4.3
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_conf_default_accept_redirects
+
+- name: Ensure sysctl net.ipv4.conf.default.accept_redirects is set
+  sysctl:
+    name: net.ipv4.conf.default.accept_redirects
+    value: '{{ sysctl_net_ipv4_conf_default_accept_redirects_value }}'
+    sysctl_file: /etc/sysctl.conf
+    state: present
+    reload: true
+  when:
+  - DISA_STIG_RHEL_07_040640 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_conf_default_accept_redirects | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80163-9
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040640
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-7(a)
+  - PCI-DSS-Req-1.4.3
+  - PCI-DSSv4-1.4.3
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_conf_default_accept_redirects
+
+- name: List /etc/sysctl.d/*.conf files
+  find:
+    paths:
+    - /etc/sysctl.d/
+    - /run/sysctl.d/
+    - /usr/local/lib/sysctl.d/
+    contains: ^[\s]*net.ipv4.conf.default.accept_source_route.*$
+    patterns: '*.conf'
+    file_type: any
+  register: find_sysctl_d
+  when:
+  - DISA_STIG_RHEL_07_040620 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_conf_default_accept_source_route | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80162-1
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040620
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-5
+  - NIST-800-53-SC-7(a)
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_conf_default_accept_source_route
+
+- name: Comment out any occurrences of net.ipv4.conf.default.accept_source_route from config files
+  replace:
+    path: '{{ item.path }}'
+    regexp: ^[\s]*net.ipv4.conf.default.accept_source_route
+    replace: '#net.ipv4.conf.default.accept_source_route'
+  loop: '{{ find_sysctl_d.files }}'
+  when:
+  - DISA_STIG_RHEL_07_040620 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_conf_default_accept_source_route | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80162-1
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040620
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-5
+  - NIST-800-53-SC-7(a)
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_conf_default_accept_source_route
+
+- name: Ensure sysctl net.ipv4.conf.default.accept_source_route is set
+  sysctl:
+    name: net.ipv4.conf.default.accept_source_route
+    value: '{{ sysctl_net_ipv4_conf_default_accept_source_route_value }}'
+    sysctl_file: /etc/sysctl.conf
+    state: present
+    reload: true
+  when:
+  - DISA_STIG_RHEL_07_040620 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_conf_default_accept_source_route | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80162-1
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040620
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-5
+  - NIST-800-53-SC-7(a)
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_conf_default_accept_source_route
+
+- name: List /etc/sysctl.d/*.conf files
+  find:
+    paths:
+    - /etc/sysctl.d/
+    - /run/sysctl.d/
+    - /usr/local/lib/sysctl.d/
+    contains: ^[\s]*net.ipv4.icmp_echo_ignore_broadcasts.*$
+    patterns: '*.conf'
+    file_type: any
+  register: find_sysctl_d
+  when:
+  - DISA_STIG_RHEL_07_040630 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_icmp_echo_ignore_broadcasts | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80165-4
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040630
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-5
+  - PCI-DSS-Req-1.4.3
+  - PCI-DSSv4-1.4.2
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+
+- name: Comment out any occurrences of net.ipv4.icmp_echo_ignore_broadcasts from config files
+  replace:
+    path: '{{ item.path }}'
+    regexp: ^[\s]*net.ipv4.icmp_echo_ignore_broadcasts
+    replace: '#net.ipv4.icmp_echo_ignore_broadcasts'
+  loop: '{{ find_sysctl_d.files }}'
+  when:
+  - DISA_STIG_RHEL_07_040630 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_icmp_echo_ignore_broadcasts | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80165-4
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040630
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-5
+  - PCI-DSS-Req-1.4.3
+  - PCI-DSSv4-1.4.2
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+
+- name: Ensure sysctl net.ipv4.icmp_echo_ignore_broadcasts is set
+  sysctl:
+    name: net.ipv4.icmp_echo_ignore_broadcasts
+    value: '{{ sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value }}'
+    sysctl_file: /etc/sysctl.conf
+    state: present
+    reload: true
+  when:
+  - DISA_STIG_RHEL_07_040630 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_icmp_echo_ignore_broadcasts | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80165-4
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040630
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-5
+  - PCI-DSS-Req-1.4.3
+  - PCI-DSSv4-1.4.2
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+
+- name: List /etc/sysctl.d/*.conf files
+  find:
+    paths:
+    - /etc/sysctl.d/
+    - /run/sysctl.d/
+    - /usr/local/lib/sysctl.d/
+    contains: ^[\s]*net.ipv4.tcp_syncookies.*$
+    patterns: '*.conf'
+    file_type: any
+  register: find_sysctl_d
+  when:
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_tcp_syncookies | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-27495-1
+  - CJIS-5.10.1.1
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-5(1)
+  - NIST-800-53-SC-5(2)
+  - NIST-800-53-SC-5(3)(a)
+  - PCI-DSS-Req-1.4.1
+  - PCI-DSSv4-1.4.3
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_tcp_syncookies
+
+- name: Comment out any occurrences of net.ipv4.tcp_syncookies from config files
+  replace:
+    path: '{{ item.path }}'
+    regexp: ^[\s]*net.ipv4.tcp_syncookies
+    replace: '#net.ipv4.tcp_syncookies'
+  loop: '{{ find_sysctl_d.files }}'
+  when:
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_tcp_syncookies | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-27495-1
+  - CJIS-5.10.1.1
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-5(1)
+  - NIST-800-53-SC-5(2)
+  - NIST-800-53-SC-5(3)(a)
+  - PCI-DSS-Req-1.4.1
+  - PCI-DSSv4-1.4.3
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_tcp_syncookies
+
+- name: Ensure sysctl net.ipv4.tcp_syncookies is set
+  sysctl:
+    name: net.ipv4.tcp_syncookies
+    value: '{{ sysctl_net_ipv4_tcp_syncookies_value }}'
+    sysctl_file: /etc/sysctl.conf
+    state: present
+    reload: true
+  when:
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_tcp_syncookies | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-27495-1
+  - CJIS-5.10.1.1
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-5(1)
+  - NIST-800-53-SC-5(2)
+  - NIST-800-53-SC-5(3)(a)
+  - PCI-DSS-Req-1.4.1
+  - PCI-DSSv4-1.4.3
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_tcp_syncookies
+
+- name: List /etc/sysctl.d/*.conf files
+  find:
+    paths:
+    - /etc/sysctl.d/
+    - /run/sysctl.d/
+    - /usr/local/lib/sysctl.d/
+    contains: ^[\s]*net.ipv4.conf.all.send_redirects.*$
+    patterns: '*.conf'
+    file_type: any
+  register: find_sysctl_d
+  when:
+  - DISA_STIG_RHEL_07_040660 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_conf_all_send_redirects | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80156-3
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040660
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-5
+  - NIST-800-53-SC-7(a)
+  - PCI-DSSv4-1.4.5
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_conf_all_send_redirects
+
+- name: Comment out any occurrences of net.ipv4.conf.all.send_redirects from config files
+  replace:
+    path: '{{ item.path }}'
+    regexp: ^[\s]*net.ipv4.conf.all.send_redirects
+    replace: '#net.ipv4.conf.all.send_redirects'
+  loop: '{{ find_sysctl_d.files }}'
+  when:
+  - DISA_STIG_RHEL_07_040660 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_conf_all_send_redirects | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80156-3
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040660
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-5
+  - NIST-800-53-SC-7(a)
+  - PCI-DSSv4-1.4.5
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_conf_all_send_redirects
+
+- name: Ensure sysctl net.ipv4.conf.all.send_redirects is set to 0
+  sysctl:
+    name: net.ipv4.conf.all.send_redirects
+    value: '0'
+    sysctl_file: /etc/sysctl.conf
+    state: present
+    reload: true
+  when:
+  - DISA_STIG_RHEL_07_040660 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_conf_all_send_redirects | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80156-3
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040660
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-5
+  - NIST-800-53-SC-7(a)
+  - PCI-DSSv4-1.4.5
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_conf_all_send_redirects
+
+- name: List /etc/sysctl.d/*.conf files
+  find:
+    paths:
+    - /etc/sysctl.d/
+    - /run/sysctl.d/
+    - /usr/local/lib/sysctl.d/
+    contains: ^[\s]*net.ipv4.conf.default.send_redirects.*$
+    patterns: '*.conf'
+    file_type: any
+  register: find_sysctl_d
+  when:
+  - DISA_STIG_RHEL_07_040650 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_conf_default_send_redirects | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80999-6
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040650
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-5
+  - NIST-800-53-SC-7(a)
+  - PCI-DSSv4-1.4.5
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_conf_default_send_redirects
+
+- name: Comment out any occurrences of net.ipv4.conf.default.send_redirects from config files
+  replace:
+    path: '{{ item.path }}'
+    regexp: ^[\s]*net.ipv4.conf.default.send_redirects
+    replace: '#net.ipv4.conf.default.send_redirects'
+  loop: '{{ find_sysctl_d.files }}'
+  when:
+  - DISA_STIG_RHEL_07_040650 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_conf_default_send_redirects | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80999-6
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040650
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-5
+  - NIST-800-53-SC-7(a)
+  - PCI-DSSv4-1.4.5
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_conf_default_send_redirects
+
+- name: Ensure sysctl net.ipv4.conf.default.send_redirects is set to 0
+  sysctl:
+    name: net.ipv4.conf.default.send_redirects
+    value: '0'
+    sysctl_file: /etc/sysctl.conf
+    state: present
+    reload: true
+  when:
+  - DISA_STIG_RHEL_07_040650 | bool
+  - disable_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - sysctl_net_ipv4_conf_default_send_redirects | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80999-6
+  - CJIS-5.10.1.1
+  - DISA-STIG-RHEL-07-040650
+  - NIST-800-171-3.1.20
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-SC-5
+  - NIST-800-53-SC-7(a)
+  - PCI-DSSv4-1.4.5
+  - disable_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+  - sysctl_net_ipv4_conf_default_send_redirects
+
+- name: Ensure kernel module 'dccp' is disabled
+  lineinfile:
+    create: true
+    dest: /etc/modprobe.d/dccp.conf
+    regexp: install\s+dccp
+    line: install dccp /bin/false
+  when:
+  - DISA_STIG_RHEL_07_020101 | bool
+  - disable_strategy | bool
+  - kernel_module_dccp_disabled | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-82024-1
+  - CJIS-5.10.1
+  - DISA-STIG-RHEL-07-020101
+  - NIST-800-171-3.4.6
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - PCI-DSS-Req-1.4.2
+  - PCI-DSSv4-1.4.2
+  - disable_strategy
+  - kernel_module_dccp_disabled
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+
+- name: Ensure kernel module 'dccp' is blacklisted
+  lineinfile:
+    create: true
+    dest: /etc/modprobe.d/dccp.conf
+    regexp: ^blacklist dccp$
+    line: blacklist dccp
+  when:
+  - DISA_STIG_RHEL_07_020101 | bool
+  - disable_strategy | bool
+  - kernel_module_dccp_disabled | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-82024-1
+  - CJIS-5.10.1
+  - DISA-STIG-RHEL-07-020101
+  - NIST-800-171-3.4.6
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - PCI-DSS-Req-1.4.2
+  - PCI-DSSv4-1.4.2
+  - disable_strategy
+  - kernel_module_dccp_disabled
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+
+- name: Ensure kernel module 'sctp' is disabled
+  lineinfile:
+    create: true
+    dest: /etc/modprobe.d/sctp.conf
+    regexp: install\s+sctp
+    line: install sctp /bin/false
+  when:
+  - disable_strategy | bool
+  - kernel_module_sctp_disabled | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-82044-9
+  - CJIS-5.10.1
+  - NIST-800-171-3.4.6
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - PCI-DSS-Req-1.4.2
+  - PCI-DSSv4-1.4.2
+  - disable_strategy
+  - kernel_module_sctp_disabled
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+
+- name: Ensure kernel module 'sctp' is blacklisted
+  lineinfile:
+    create: true
+    dest: /etc/modprobe.d/sctp.conf
+    regexp: ^blacklist sctp$
+    line: blacklist sctp
+  when:
+  - disable_strategy | bool
+  - kernel_module_sctp_disabled | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-82044-9
+  - CJIS-5.10.1
+  - NIST-800-171-3.4.6
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - PCI-DSS-Req-1.4.2
+  - PCI-DSSv4-1.4.2
+  - disable_strategy
+  - kernel_module_sctp_disabled
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+
+- name: Ensure kernel module 'bluetooth' is disabled
+  lineinfile:
+    create: true
+    dest: /etc/modprobe.d/bluetooth.conf
+    regexp: install\s+bluetooth
+    line: install bluetooth /bin/false
+  when:
+  - disable_strategy | bool
+  - kernel_module_bluetooth_disabled | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-27327-6
+  - CJIS-5.13.1.3
+  - NIST-800-171-3.1.16
+  - NIST-800-53-AC-18(3)
+  - NIST-800-53-AC-18(a)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-MP-7
+  - disable_strategy
+  - kernel_module_bluetooth_disabled
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+
+- name: Ensure kernel module 'bluetooth' is blacklisted
+  lineinfile:
+    create: true
+    dest: /etc/modprobe.d/bluetooth.conf
+    regexp: ^blacklist bluetooth$
+    line: blacklist bluetooth
+  when:
+  - disable_strategy | bool
+  - kernel_module_bluetooth_disabled | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - reboot_required | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-27327-6
+  - CJIS-5.13.1.3
+  - NIST-800-171-3.1.16
+  - NIST-800-53-AC-18(3)
+  - NIST-800-53-AC-18(a)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-MP-7
+  - disable_strategy
+  - kernel_module_bluetooth_disabled
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - reboot_required
+
+- name: Test for existence /etc/group
+  stat:
+    path: /etc/group
+  register: file_exists
+  tags:
+  - CCE-82037-3
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_groupowner_etc_group
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  when:
+  - configure_strategy | bool
+  - file_groupowner_etc_group | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+
+- name: Ensure group owner 0 on /etc/group
+  file:
+    path: /etc/group
+    group: '0'
+  when:
+  - configure_strategy | bool
+  - file_groupowner_etc_group | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - file_exists.stat is defined and file_exists.stat.exists
+  tags:
+  - CCE-82037-3
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_groupowner_etc_group
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Test for existence /etc/passwd
+  stat:
+    path: /etc/passwd
+  register: file_exists
+  tags:
+  - CCE-26639-5
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_groupowner_etc_passwd
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  when:
+  - configure_strategy | bool
+  - file_groupowner_etc_passwd | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+
+- name: Ensure group owner 0 on /etc/passwd
+  file:
+    path: /etc/passwd
+    group: '0'
+  when:
+  - configure_strategy | bool
+  - file_groupowner_etc_passwd | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - file_exists.stat is defined and file_exists.stat.exists
+  tags:
+  - CCE-26639-5
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_groupowner_etc_passwd
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Test for existence /etc/shadow
+  stat:
+    path: /etc/shadow
+  register: file_exists
+  tags:
+  - CCE-82051-4
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_groupowner_etc_shadow
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  when:
+  - configure_strategy | bool
+  - file_groupowner_etc_shadow | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+
+- name: Ensure group owner 0 on /etc/shadow
+  file:
+    path: /etc/shadow
+    group: '0'
+  when:
+  - configure_strategy | bool
+  - file_groupowner_etc_shadow | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - file_exists.stat is defined and file_exists.stat.exists
+  tags:
+  - CCE-82051-4
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_groupowner_etc_shadow
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Test for existence /etc/group
+  stat:
+    path: /etc/group
+  register: file_exists
+  tags:
+  - CCE-82031-6
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_owner_etc_group
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  when:
+  - configure_strategy | bool
+  - file_owner_etc_group | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+
+- name: Ensure owner 0 on /etc/group
+  file:
+    path: /etc/group
+    owner: '0'
+  when:
+  - configure_strategy | bool
+  - file_owner_etc_group | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - file_exists.stat is defined and file_exists.stat.exists
+  tags:
+  - CCE-82031-6
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_owner_etc_group
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Test for existence /etc/passwd
+  stat:
+    path: /etc/passwd
+  register: file_exists
+  tags:
+  - CCE-82052-2
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_owner_etc_passwd
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  when:
+  - configure_strategy | bool
+  - file_owner_etc_passwd | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+
+- name: Ensure owner 0 on /etc/passwd
+  file:
+    path: /etc/passwd
+    owner: '0'
+  when:
+  - configure_strategy | bool
+  - file_owner_etc_passwd | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - file_exists.stat is defined and file_exists.stat.exists
+  tags:
+  - CCE-82052-2
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_owner_etc_passwd
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Test for existence /etc/shadow
+  stat:
+    path: /etc/shadow
+  register: file_exists
+  tags:
+  - CCE-82022-5
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_owner_etc_shadow
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  when:
+  - configure_strategy | bool
+  - file_owner_etc_shadow | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+
+- name: Ensure owner 0 on /etc/shadow
+  file:
+    path: /etc/shadow
+    owner: '0'
+  when:
+  - configure_strategy | bool
+  - file_owner_etc_shadow | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - file_exists.stat is defined and file_exists.stat.exists
+  tags:
+  - CCE-82022-5
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_owner_etc_shadow
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Test for existence /etc/group
+  stat:
+    path: /etc/group
+  register: file_exists
+  tags:
+  - CCE-82032-4
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_permissions_etc_group
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  when:
+  - configure_strategy | bool
+  - file_permissions_etc_group | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+
+- name: Ensure permission u-xs,g-xws,o-xwt on /etc/group
+  file:
+    path: /etc/group
+    mode: u-xs,g-xws,o-xwt
+  when:
+  - configure_strategy | bool
+  - file_permissions_etc_group | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - file_exists.stat is defined and file_exists.stat.exists
+  tags:
+  - CCE-82032-4
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_permissions_etc_group
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Test for existence /etc/passwd
+  stat:
+    path: /etc/passwd
+  register: file_exists
+  tags:
+  - CCE-82029-0
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_permissions_etc_passwd
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  when:
+  - configure_strategy | bool
+  - file_permissions_etc_passwd | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+
+- name: Ensure permission u-xs,g-xws,o-xwt on /etc/passwd
+  file:
+    path: /etc/passwd
+    mode: u-xs,g-xws,o-xwt
+  when:
+  - configure_strategy | bool
+  - file_permissions_etc_passwd | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - file_exists.stat is defined and file_exists.stat.exists
+  tags:
+  - CCE-82029-0
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_permissions_etc_passwd
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Test for existence /etc/shadow
+  stat:
+    path: /etc/shadow
+  register: file_exists
+  tags:
+  - CCE-82042-3
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_permissions_etc_shadow
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  when:
+  - configure_strategy | bool
+  - file_permissions_etc_shadow | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+
+- name: Ensure permission u-xwrs,g-xwrs,o-xwrt on /etc/shadow
+  file:
+    path: /etc/shadow
+    mode: u-xwrs,g-xwrs,o-xwrt
+  when:
+  - configure_strategy | bool
+  - file_permissions_etc_shadow | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - file_exists.stat is defined and file_exists.stat.exists
+  tags:
+  - CCE-82042-3
+  - CJIS-5.5.2.2
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-8.7.c
+  - PCI-DSSv4-2.2.6
+  - configure_strategy
+  - file_permissions_etc_shadow
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Set SSH Client Alive Count Max to zero
+  block:
+  - name: Check for duplicate values
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*ClientAliveCountMax\s+
+      state: absent
+    check_mode: true
+    changed_when: false
+    register: dupes
+  - name: Deduplicate values from /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*ClientAliveCountMax\s+
+      state: absent
+    when: dupes.found is defined and dupes.found > 1
+  - name: Insert correct line to /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*ClientAliveCountMax\s+
+      line: ClientAliveCountMax 0
+      state: present
+      insertbefore: BOF
+      validate: /usr/sbin/sshd -t -f %s
+  when:
+  - DISA_STIG_RHEL_07_040340 | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
+  - sshd_set_keepalive_0 | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-83399-6
+  - CJIS-5.5.6
+  - DISA-STIG-RHEL-07-040340
+  - NIST-800-171-3.1.11
+  - NIST-800-53-AC-12
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-AC-2(5)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-SC-10
+  - PCI-DSS-Req-8.1.8
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - restrict_strategy
+  - sshd_set_keepalive_0
+
+- name: Set SSH Client Alive Interval
+  block:
+  - name: Check for duplicate values
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*ClientAliveInterval\s+
+      state: absent
+    check_mode: true
+    changed_when: false
+    register: dupes
+  - name: Deduplicate values from /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*ClientAliveInterval\s+
+      state: absent
+    when: dupes.found is defined and dupes.found > 1
+  - name: Insert correct line to /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*ClientAliveInterval\s+
+      line: ClientAliveInterval {{ sshd_idle_timeout_value }}
+      state: present
+      insertbefore: BOF
+      validate: /usr/sbin/sshd -t -f %s
+  when:
+  - DISA_STIG_RHEL_07_040320 | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
+  - sshd_set_idle_timeout | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-27433-2
+  - CJIS-5.5.6
+  - DISA-STIG-RHEL-07-040320
+  - NIST-800-171-3.1.11
+  - NIST-800-53-AC-12
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-AC-2(5)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-SC-10
+  - PCI-DSS-Req-8.1.8
+  - PCI-DSSv4-8.2.8
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - restrict_strategy
+  - sshd_set_idle_timeout
+
+- name: Disable Host-Based Authentication
+  block:
+  - name: Check for duplicate values
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*HostbasedAuthentication\s+
+      state: absent
+    check_mode: true
+    changed_when: false
+    register: dupes
+  - name: Deduplicate values from /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*HostbasedAuthentication\s+
+      state: absent
+    when: dupes.found is defined and dupes.found > 1
+  - name: Insert correct line to /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*HostbasedAuthentication\s+
+      line: HostbasedAuthentication no
+      state: present
+      insertbefore: BOF
+      validate: /usr/sbin/sshd -t -f %s
+  when:
+  - DISA_STIG_RHEL_07_010470 | bool
+  - disable_host_auth | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-27413-4
+  - CJIS-5.5.6
+  - DISA-STIG-RHEL-07-010470
+  - NIST-800-171-3.1.12
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-AC-3
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - PCI-DSSv4-8.3.1
+  - disable_host_auth
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - restrict_strategy
+
+- name: Enable SSH Server firewalld Firewall Exception - Ensure firewalld and NetworkManager packages are installed
+  ansible.builtin.package:
+    name: '{{ item }}'
+    state: present
+  with_items:
+  - firewalld
+  - NetworkManager
+  when:
+  - configure_strategy | bool
+  - firewalld_sshd_port_enabled | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80361-9
+  - NIST-800-171-3.1.12
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-CM-6(b)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - configure_strategy
+  - firewalld_sshd_port_enabled
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Enable SSH Server firewalld Firewall Exception - Collect facts about system services
+  ansible.builtin.service_facts: null
+  register: result_services_states
+  when:
+  - configure_strategy | bool
+  - firewalld_sshd_port_enabled | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80361-9
+  - NIST-800-171-3.1.12
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-CM-6(b)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - configure_strategy
+  - firewalld_sshd_port_enabled
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Enable SSH Server firewalld Firewall Exception - Remediation is applicable if firewalld and NetworkManager services
+    are running
+  block:
+  - name: Enable SSH Server firewalld Firewall Exception - Collect NetworkManager connections names
+    ansible.builtin.shell:
+      cmd: nmcli -f UUID,TYPE con | grep ethernet | awk '{ print $1 }'
+    register: result_nmcli_cmd_connections_names
+    changed_when: false
+  - name: Enable SSH Server firewalld Firewall Exception - Collect NetworkManager connections zones
+    ansible.builtin.shell:
+      cmd: nmcli -f connection.zone connection show {{ item | trim }} | awk '{ print $2}'
+    register: result_nmcli_cmd_connections_zones
+    changed_when: false
+    with_items:
+    - '{{ result_nmcli_cmd_connections_names.stdout_lines }}'
+  - name: Enable SSH Server firewalld Firewall Exception - Ensure NetworkManager connections are assigned to a firewalld zone
+    ansible.builtin.command:
+      cmd: nmcli connection modify {{ item.0 }} connection.zone {{ firewalld_sshd_zone }}
+    register: result_nmcli_cmd_connections_assignment
+    with_together:
+    - '{{ result_nmcli_cmd_connections_names.stdout_lines }}'
+    - '{{ result_nmcli_cmd_connections_zones.results }}'
+    when:
+    - item.1.stdout == '--'
+  - name: Enable SSH Server firewalld Firewall Exception - Ensure NetworkManager connections changes are applied
+    ansible.builtin.service:
+      name: NetworkManager
+      state: restarted
+    when:
+    - result_nmcli_cmd_connections_assignment is changed
+  - name: Enable SSH Server firewalld Firewall Exception - Collect firewalld active zones
+    ansible.builtin.shell:
+      cmd: firewall-cmd --get-active-zones | grep -v interfaces
+    register: result_firewall_cmd_zones_names
+    changed_when: false
+  - name: Enable SSH Server firewalld Firewall Exception - Ensure firewalld zones allow SSH
+    ansible.builtin.command:
+      cmd: firewall-cmd --permanent --zone={{ item }} --add-service=ssh
+    register: result_nmcli_cmd_connections_assignment
+    changed_when:
+    - '''ALREADY_ENABLED'' not in result_nmcli_cmd_connections_assignment.stderr'
+    with_items:
+    - '{{ result_firewall_cmd_zones_names.stdout_lines }}'
+  - name: Enable SSH Server firewalld Firewall Exception - Ensure firewalld changes are applied
+    ansible.builtin.service:
+      name: firewalld
+      state: reloaded
+    when:
+    - result_nmcli_cmd_connections_assignment is changed
+  when:
+  - configure_strategy | bool
+  - firewalld_sshd_port_enabled | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  - ansible_facts.services['firewalld.service'].state == 'running'
+  - ansible_facts.services['NetworkManager.service'].state == 'running'
+  tags:
+  - CCE-80361-9
+  - NIST-800-171-3.1.12
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-CM-6(b)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - configure_strategy
+  - firewalld_sshd_port_enabled
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Enable SSH Server firewalld Firewall Exception - Informative message based on services states
+  ansible.builtin.assert:
+    that:
+    - ansible_facts.services['firewalld.service'].state == 'running'
+    - ansible_facts.services['NetworkManager.service'].state == 'running'
+    fail_msg:
+    - firewalld and NetworkManager services are not active. Remediation aborted!
+    - This remediation could not be applied because it depends on firewalld and NetworkManager services running.
+    - The service is not started by this remediation in order to prevent connection issues.
+    success_msg:
+    - Enable SSH Server firewalld Firewall Exception remediation successfully executed
+  when:
+  - configure_strategy | bool
+  - firewalld_sshd_port_enabled | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-80361-9
+  - NIST-800-171-3.1.12
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-CM-6(b)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - configure_strategy
+  - firewalld_sshd_port_enabled
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Allow Only SSH Protocol 2
+  block:
+  - name: Check for duplicate values
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*Protocol\s+
+      state: absent
+    check_mode: true
+    changed_when: false
+    register: dupes
+  - name: Deduplicate values from /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*Protocol\s+
+      state: absent
+    when: dupes.found is defined and dupes.found > 1
+  - name: Insert correct line to /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*Protocol\s+
+      line: Protocol 2
+      state: present
+      insertbefore: BOF
+      validate: /usr/sbin/sshd -t -f %s
+  when:
+  - DISA_STIG_RHEL_07_040390 | bool
+  - high_severity | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
+  - sshd_allow_only_protocol2 | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-27320-1
+  - CJIS-5.5.6
+  - DISA-STIG-RHEL-07-040390
+  - NIST-800-171-3.1.13
+  - NIST-800-171-3.5.4
+  - NIST-800-53-AC-17(2)
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-IA-5(1)(c)
+  - NIST-800-53-MA-4(6)
+  - NIST-800-53-SC-13
+  - high_severity
+  - low_complexity
+  - low_disruption
+  - no_reboot_needed
+  - restrict_strategy
+  - sshd_allow_only_protocol2
+
+- name: Disable SSH Access via Empty Passwords
+  block:
+  - name: Check for duplicate values
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*PermitEmptyPasswords\s+
+      state: absent
+    check_mode: true
+    changed_when: false
+    register: dupes
+  - name: Deduplicate values from /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*PermitEmptyPasswords\s+
+      state: absent
+    when: dupes.found is defined and dupes.found > 1
+  - name: Insert correct line to /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*PermitEmptyPasswords\s+
+      line: PermitEmptyPasswords no
+      state: present
+      insertbefore: BOF
+      validate: /usr/sbin/sshd -t -f %s
+  when:
+  - DISA_STIG_RHEL_07_010300 | bool
+  - high_severity | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
+  - sshd_disable_empty_passwords | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-27471-2
+  - CJIS-5.5.6
+  - DISA-STIG-RHEL-07-010300
+  - NIST-800-171-3.1.1
+  - NIST-800-171-3.1.5
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - PCI-DSS-Req-2.2.4
+  - PCI-DSSv4-2.2.6
+  - high_severity
+  - low_complexity
+  - low_disruption
+  - no_reboot_needed
+  - restrict_strategy
+  - sshd_disable_empty_passwords
+
+- name: Disable SSH Root Login
+  block:
+  - name: Check for duplicate values
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*PermitRootLogin\s+
+      state: absent
+    check_mode: true
+    changed_when: false
+    register: dupes
+  - name: Deduplicate values from /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*PermitRootLogin\s+
+      state: absent
+    when: dupes.found is defined and dupes.found > 1
+  - name: Insert correct line to /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*PermitRootLogin\s+
+      line: PermitRootLogin no
+      state: present
+      insertbefore: BOF
+      validate: /usr/sbin/sshd -t -f %s
+  when:
+  - DISA_STIG_RHEL_07_040370 | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
+  - sshd_disable_root_login | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-27445-6
+  - CJIS-5.5.6
+  - DISA-STIG-RHEL-07-040370
+  - NIST-800-171-3.1.1
+  - NIST-800-171-3.1.5
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-AC-6(2)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - NIST-800-53-IA-2
+  - NIST-800-53-IA-2(5)
+  - PCI-DSS-Req-2.2.4
+  - PCI-DSSv4-2.2.6
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - restrict_strategy
+  - sshd_disable_root_login
+
+- name: Do Not Allow SSH Environment Options
+  block:
+  - name: Check for duplicate values
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*PermitUserEnvironment\s+
+      state: absent
+    check_mode: true
+    changed_when: false
+    register: dupes
+  - name: Deduplicate values from /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*PermitUserEnvironment\s+
+      state: absent
+    when: dupes.found is defined and dupes.found > 1
+  - name: Insert correct line to /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*PermitUserEnvironment\s+
+      line: PermitUserEnvironment no
+      state: present
+      insertbefore: BOF
+      validate: /usr/sbin/sshd -t -f %s
+  when:
+  - DISA_STIG_RHEL_07_010460 | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
+  - sshd_do_not_permit_user_env | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-27363-1
+  - CJIS-5.5.6
+  - DISA-STIG-RHEL-07-010460
+  - NIST-800-171-3.1.12
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-CM-7(a)
+  - NIST-800-53-CM-7(b)
+  - PCI-DSS-Req-2.2.4
+  - PCI-DSSv4-2.2.6
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - restrict_strategy
+  - sshd_do_not_permit_user_env
+
+- name: Enable SSH Warning Banner
+  block:
+  - name: Check for duplicate values
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*Banner\s+
+      state: absent
+    check_mode: true
+    changed_when: false
+    register: dupes
+  - name: Deduplicate values from /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*Banner\s+
+      state: absent
+    when: dupes.found is defined and dupes.found > 1
+  - name: Insert correct line to /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*Banner\s+
+      line: Banner /etc/issue
+      state: present
+      insertbefore: BOF
+      validate: /usr/sbin/sshd -t -f %s
+  when:
+  - DISA_STIG_RHEL_07_040170 | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
+  - sshd_enable_warning_banner | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-27314-4
+  - CJIS-5.5.6
+  - DISA-STIG-RHEL-07-040170
+  - NIST-800-171-3.1.9
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-AC-8(a)
+  - NIST-800-53-AC-8(c)
+  - NIST-800-53-CM-6(a)
+  - PCI-DSS-Req-2.2.4
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - restrict_strategy
+  - sshd_enable_warning_banner
+
+- name: Use Only FIPS 140-2 Validated Ciphers
+  block:
+  - name: Check for duplicate values
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*Ciphers\s+
+      state: absent
+    check_mode: true
+    changed_when: false
+    register: dupes
+  - name: Deduplicate values from /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*Ciphers\s+
+      state: absent
+    when: dupes.found is defined and dupes.found > 1
+  - name: Insert correct line to /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      create: true
+      regexp: (?i)^\s*Ciphers\s+
+      line: Ciphers {{ sshd_approved_ciphers }}
+      state: present
+      insertbefore: BOF
+      validate: /usr/sbin/sshd -t -f %s
+  when:
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
+  - sshd_use_approved_ciphers | bool
+  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+  - CCE-27295-5
+  - CJIS-5.5.6
+  - NIST-800-171-3.1.13
+  - NIST-800-171-3.13.11
+  - NIST-800-171-3.13.8
+  - NIST-800-53-AC-17(2)
+  - NIST-800-53-AC-17(a)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-IA-5(1)(c)
+  - NIST-800-53-MA-4(6)
+  - NIST-800-53-SC-12(2)
+  - NIST-800-53-SC-12(3)
+  - NIST-800-53-SC-13
+  - PCI-DSSv4-2.2.7
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - restrict_strategy
+  - sshd_use_approved_ciphers
+
+- name: Gather the package facts
+  package_facts:
+    manager: auto
+  tags:
   - CCE-27407-6
   - CJIS-5.4.1.1
   - DISA-STIG-RHEL-07-030000
@@ -2975,7 +5198,7 @@
   - NIST-800-53-CM-6(a)
   - NIST-800-53-IR-5(1)
   - PCI-DSS-Req-10.3
-  - PCI-DSSv4-10.7.3
+  - PCI-DSSv4-10.7.2
   - grub2_audit_argument
   - low_disruption
   - low_severity
@@ -3013,7 +5236,7 @@
   - NIST-800-53-CM-6(a)
   - NIST-800-53-IR-5(1)
   - PCI-DSS-Req-10.3
-  - PCI-DSSv4-10.7.3
+  - PCI-DSSv4-10.7.2
   - grub2_audit_argument
   - low_disruption
   - low_severity
@@ -3044,7 +5267,7 @@
   - NIST-800-53-CM-6(a)
   - NIST-800-53-IR-5(1)
   - PCI-DSS-Req-10.3
-  - PCI-DSSv4-10.7.3
+  - PCI-DSSv4-10.7.2
   - grub2_audit_argument
   - low_disruption
   - low_severity
@@ -3079,7 +5302,7 @@
   - NIST-800-53-CM-6(a)
   - NIST-800-53-IR-5(1)
   - PCI-DSS-Req-10.3
-  - PCI-DSSv4-10.7.3
+  - PCI-DSSv4-10.7.2
   - grub2_audit_argument
   - low_disruption
   - low_severity
@@ -3112,7 +5335,7 @@
   - NIST-800-53-CM-6(a)
   - NIST-800-53-IR-5(1)
   - PCI-DSS-Req-10.3
-  - PCI-DSSv4-10.7.3
+  - PCI-DSSv4-10.7.2
   - grub2_audit_argument
   - low_disruption
   - low_severity
@@ -3145,7 +5368,7 @@
   - NIST-800-53-CM-6(a)
   - NIST-800-53-IR-5(1)
   - PCI-DSS-Req-10.3
-  - PCI-DSSv4-10.7.3
+  - PCI-DSSv4-10.7.2
   - grub2_audit_argument
   - low_disruption
   - low_severity
@@ -3174,7 +5397,7 @@
   - NIST-800-53-CM-6(a)
   - NIST-800-53-IR-5(1)
   - PCI-DSS-Req-10.3
-  - PCI-DSSv4-10.7.3
+  - PCI-DSSv4-10.7.2
   - grub2_audit_argument
   - low_disruption
   - low_severity
@@ -10873,7 +13096,7 @@
 - name: Ensure auditd Collects Information on the Use of Privileged Commands - Set List of Mount Points Which Permits Execution
     of Privileged Commands
   ansible.builtin.set_fact:
-    privileged_mount_points: '{{(ansible_facts.mounts | rejectattr(''options'', ''search'', ''noexec|nosuid'') | rejectattr(''mount'',
+    privileged_mount_points: '{{ (ansible_facts.mounts | rejectattr(''options'', ''search'', ''noexec|nosuid'') | rejectattr(''mount'',
       ''match'', ''/proc($|/.*$)'') | map(attribute=''mount'') | list ) }}'
   when:
   - audit_rules_privileged_commands | bool
@@ -12086,7 +14309,6 @@
   - NIST-800-53-CM-6(a)
   - PCI-DSS-Req-10.4.2.b
   - PCI-DSSv4-10.6.3
-  - PCI-DSSv4-10.6.3
   - audit_rules_time_watch_localtime
   - low_complexity
   - low_disruption
@@ -12126,7 +14348,6 @@
   - NIST-800-53-CM-6(a)
   - PCI-DSS-Req-10.4.2.b
   - PCI-DSSv4-10.6.3
-  - PCI-DSSv4-10.6.3
   - audit_rules_time_watch_localtime
   - low_complexity
   - low_disruption
@@ -12160,7 +14381,6 @@
   - NIST-800-53-CM-6(a)
   - PCI-DSS-Req-10.4.2.b
   - PCI-DSSv4-10.6.3
-  - PCI-DSSv4-10.6.3
   - audit_rules_time_watch_localtime
   - low_complexity
   - low_disruption
@@ -12193,7 +14413,6 @@
   - NIST-800-53-CM-6(a)
   - PCI-DSS-Req-10.4.2.b
   - PCI-DSSv4-10.6.3
-  - PCI-DSSv4-10.6.3
   - audit_rules_time_watch_localtime
   - low_complexity
   - low_disruption
@@ -12225,7 +14444,6 @@
   - NIST-800-53-AU-2(d)
   - NIST-800-53-CM-6(a)
   - PCI-DSS-Req-10.4.2.b
-  - PCI-DSSv4-10.6.3
   - PCI-DSSv4-10.6.3
   - audit_rules_time_watch_localtime
   - low_complexity
@@ -12260,7 +14478,6 @@
   - NIST-800-53-CM-6(a)
   - PCI-DSS-Req-10.4.2.b
   - PCI-DSSv4-10.6.3
-  - PCI-DSSv4-10.6.3
   - audit_rules_time_watch_localtime
   - low_complexity
   - low_disruption
@@ -12292,7 +14509,6 @@
   - NIST-800-53-AU-2(d)
   - NIST-800-53-CM-6(a)
   - PCI-DSS-Req-10.4.2.b
-  - PCI-DSSv4-10.6.3
   - PCI-DSSv4-10.6.3
   - audit_rules_time_watch_localtime
   - low_complexity
@@ -12327,7 +14543,6 @@
   - NIST-800-53-AU-2(d)
   - NIST-800-53-CM-6(a)
   - PCI-DSS-Req-10.4.2.b
-  - PCI-DSSv4-10.6.3
   - PCI-DSSv4-10.6.3
   - audit_rules_time_watch_localtime
   - low_complexity
@@ -12743,2257 +14958,3 @@
   - medium_severity
   - no_reboot_needed
   - restrict_strategy
-
-- name: Gather the package facts
-  package_facts:
-    manager: auto
-  tags:
-  - CCE-82023-3
-  - CJIS-5.5.2.2
-  - NIST-800-171-3.4.5
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-7.1
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_groupowner_grub2_cfg
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  when:
-  - configure_strategy | bool
-  - file_groupowner_grub2_cfg | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-
-- name: Test for existence /boot/grub2/grub.cfg
-  stat:
-    path: /boot/grub2/grub.cfg
-  register: file_exists
-  when:
-  - configure_strategy | bool
-  - file_groupowner_grub2_cfg | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - '"/boot/efi" not in ansible_mounts | map(attribute="mount") | list'
-  - '"grub2-common" in ansible_facts.packages'
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-82023-3
-  - CJIS-5.5.2.2
-  - NIST-800-171-3.4.5
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-7.1
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_groupowner_grub2_cfg
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-
-- name: Ensure group owner 0 on /boot/grub2/grub.cfg
-  file:
-    path: /boot/grub2/grub.cfg
-    group: '0'
-  when:
-  - configure_strategy | bool
-  - file_groupowner_grub2_cfg | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - '"/boot/efi" not in ansible_mounts | map(attribute="mount") | list'
-  - '"grub2-common" in ansible_facts.packages'
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  - file_exists.stat is defined and file_exists.stat.exists
-  tags:
-  - CCE-82023-3
-  - CJIS-5.5.2.2
-  - NIST-800-171-3.4.5
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-7.1
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_groupowner_grub2_cfg
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-
-- name: Gather the package facts
-  package_facts:
-    manager: auto
-  tags:
-  - CCE-82026-6
-  - CJIS-5.5.2.2
-  - NIST-800-171-3.4.5
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-7.1
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_owner_grub2_cfg
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  when:
-  - configure_strategy | bool
-  - file_owner_grub2_cfg | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-
-- name: Test for existence /boot/grub2/grub.cfg
-  stat:
-    path: /boot/grub2/grub.cfg
-  register: file_exists
-  when:
-  - configure_strategy | bool
-  - file_owner_grub2_cfg | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - '"/boot/efi" not in ansible_mounts | map(attribute="mount") | list'
-  - '"grub2-common" in ansible_facts.packages'
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-82026-6
-  - CJIS-5.5.2.2
-  - NIST-800-171-3.4.5
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-7.1
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_owner_grub2_cfg
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-
-- name: Ensure owner 0 on /boot/grub2/grub.cfg
-  file:
-    path: /boot/grub2/grub.cfg
-    owner: '0'
-  when:
-  - configure_strategy | bool
-  - file_owner_grub2_cfg | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - '"/boot/efi" not in ansible_mounts | map(attribute="mount") | list'
-  - '"grub2-common" in ansible_facts.packages'
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  - file_exists.stat is defined and file_exists.stat.exists
-  tags:
-  - CCE-82026-6
-  - CJIS-5.5.2.2
-  - NIST-800-171-3.4.5
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-7.1
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_owner_grub2_cfg
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-
-- name: Gather the package facts
-  package_facts:
-    manager: auto
-  tags:
-  - CCE-80998-8
-  - DISA-STIG-RHEL-07-040520
-  - NIST-800-171-3.1.3
-  - NIST-800-171-3.4.7
-  - NIST-800-53-AC-4
-  - NIST-800-53-CA-3(5)
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-7(21)
-  - PCI-DSSv4-1.2.1
-  - enable_strategy
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - service_firewalld_enabled
-  when:
-  - DISA_STIG_RHEL_07_040520 | bool
-  - enable_strategy | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - service_firewalld_enabled | bool
-
-- name: Enable service firewalld
-  block:
-  - name: Gather the package facts
-    package_facts:
-      manager: auto
-  - name: Enable service firewalld
-    systemd:
-      name: firewalld
-      enabled: 'yes'
-      state: started
-      masked: 'no'
-    when:
-    - '"firewalld" in ansible_facts.packages'
-  when:
-  - DISA_STIG_RHEL_07_040520 | bool
-  - enable_strategy | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - service_firewalld_enabled | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  - '"firewalld" in ansible_facts.packages'
-  tags:
-  - CCE-80998-8
-  - DISA-STIG-RHEL-07-040520
-  - NIST-800-171-3.1.3
-  - NIST-800-171-3.4.7
-  - NIST-800-53-AC-4
-  - NIST-800-53-CA-3(5)
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-7(21)
-  - PCI-DSSv4-1.2.1
-  - enable_strategy
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - service_firewalld_enabled
-
-- name: List /etc/sysctl.d/*.conf files
-  find:
-    paths:
-    - /etc/sysctl.d/
-    - /run/sysctl.d/
-    - /usr/local/lib/sysctl.d/
-    contains: ^[\s]*net.ipv4.conf.all.accept_redirects.*$
-    patterns: '*.conf'
-    file_type: any
-  register: find_sysctl_d
-  when:
-  - DISA_STIG_RHEL_07_040641 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_conf_all_accept_redirects | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80158-9
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040641
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-7(a)
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_conf_all_accept_redirects
-
-- name: Comment out any occurrences of net.ipv4.conf.all.accept_redirects from config files
-  replace:
-    path: '{{ item.path }}'
-    regexp: ^[\s]*net.ipv4.conf.all.accept_redirects
-    replace: '#net.ipv4.conf.all.accept_redirects'
-  loop: '{{ find_sysctl_d.files }}'
-  when:
-  - DISA_STIG_RHEL_07_040641 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_conf_all_accept_redirects | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80158-9
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040641
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-7(a)
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_conf_all_accept_redirects
-
-- name: Ensure sysctl net.ipv4.conf.all.accept_redirects is set
-  sysctl:
-    name: net.ipv4.conf.all.accept_redirects
-    value: '{{ sysctl_net_ipv4_conf_all_accept_redirects_value }}'
-    sysctl_file: /etc/sysctl.conf
-    state: present
-    reload: true
-  when:
-  - DISA_STIG_RHEL_07_040641 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_conf_all_accept_redirects | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80158-9
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040641
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-7(a)
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_conf_all_accept_redirects
-
-- name: List /etc/sysctl.d/*.conf files
-  find:
-    paths:
-    - /etc/sysctl.d/
-    - /run/sysctl.d/
-    - /usr/local/lib/sysctl.d/
-    contains: ^[\s]*net.ipv4.conf.default.accept_redirects.*$
-    patterns: '*.conf'
-    file_type: any
-  register: find_sysctl_d
-  when:
-  - DISA_STIG_RHEL_07_040640 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_conf_default_accept_redirects | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80163-9
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040640
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-7(a)
-  - PCI-DSS-Req-1.4.3
-  - PCI-DSSv4-1.4.3
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_conf_default_accept_redirects
-
-- name: Comment out any occurrences of net.ipv4.conf.default.accept_redirects from config files
-  replace:
-    path: '{{ item.path }}'
-    regexp: ^[\s]*net.ipv4.conf.default.accept_redirects
-    replace: '#net.ipv4.conf.default.accept_redirects'
-  loop: '{{ find_sysctl_d.files }}'
-  when:
-  - DISA_STIG_RHEL_07_040640 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_conf_default_accept_redirects | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80163-9
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040640
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-7(a)
-  - PCI-DSS-Req-1.4.3
-  - PCI-DSSv4-1.4.3
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_conf_default_accept_redirects
-
-- name: Ensure sysctl net.ipv4.conf.default.accept_redirects is set
-  sysctl:
-    name: net.ipv4.conf.default.accept_redirects
-    value: '{{ sysctl_net_ipv4_conf_default_accept_redirects_value }}'
-    sysctl_file: /etc/sysctl.conf
-    state: present
-    reload: true
-  when:
-  - DISA_STIG_RHEL_07_040640 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_conf_default_accept_redirects | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80163-9
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040640
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-7(a)
-  - PCI-DSS-Req-1.4.3
-  - PCI-DSSv4-1.4.3
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_conf_default_accept_redirects
-
-- name: List /etc/sysctl.d/*.conf files
-  find:
-    paths:
-    - /etc/sysctl.d/
-    - /run/sysctl.d/
-    - /usr/local/lib/sysctl.d/
-    contains: ^[\s]*net.ipv4.conf.default.accept_source_route.*$
-    patterns: '*.conf'
-    file_type: any
-  register: find_sysctl_d
-  when:
-  - DISA_STIG_RHEL_07_040620 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_conf_default_accept_source_route | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80162-1
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040620
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-5
-  - NIST-800-53-SC-7(a)
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_conf_default_accept_source_route
-
-- name: Comment out any occurrences of net.ipv4.conf.default.accept_source_route from config files
-  replace:
-    path: '{{ item.path }}'
-    regexp: ^[\s]*net.ipv4.conf.default.accept_source_route
-    replace: '#net.ipv4.conf.default.accept_source_route'
-  loop: '{{ find_sysctl_d.files }}'
-  when:
-  - DISA_STIG_RHEL_07_040620 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_conf_default_accept_source_route | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80162-1
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040620
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-5
-  - NIST-800-53-SC-7(a)
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_conf_default_accept_source_route
-
-- name: Ensure sysctl net.ipv4.conf.default.accept_source_route is set
-  sysctl:
-    name: net.ipv4.conf.default.accept_source_route
-    value: '{{ sysctl_net_ipv4_conf_default_accept_source_route_value }}'
-    sysctl_file: /etc/sysctl.conf
-    state: present
-    reload: true
-  when:
-  - DISA_STIG_RHEL_07_040620 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_conf_default_accept_source_route | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80162-1
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040620
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-5
-  - NIST-800-53-SC-7(a)
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_conf_default_accept_source_route
-
-- name: List /etc/sysctl.d/*.conf files
-  find:
-    paths:
-    - /etc/sysctl.d/
-    - /run/sysctl.d/
-    - /usr/local/lib/sysctl.d/
-    contains: ^[\s]*net.ipv4.icmp_echo_ignore_broadcasts.*$
-    patterns: '*.conf'
-    file_type: any
-  register: find_sysctl_d
-  when:
-  - DISA_STIG_RHEL_07_040630 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_icmp_echo_ignore_broadcasts | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80165-4
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040630
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-5
-  - PCI-DSS-Req-1.4.3
-  - PCI-DSSv4-1.4.2
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-
-- name: Comment out any occurrences of net.ipv4.icmp_echo_ignore_broadcasts from config files
-  replace:
-    path: '{{ item.path }}'
-    regexp: ^[\s]*net.ipv4.icmp_echo_ignore_broadcasts
-    replace: '#net.ipv4.icmp_echo_ignore_broadcasts'
-  loop: '{{ find_sysctl_d.files }}'
-  when:
-  - DISA_STIG_RHEL_07_040630 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_icmp_echo_ignore_broadcasts | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80165-4
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040630
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-5
-  - PCI-DSS-Req-1.4.3
-  - PCI-DSSv4-1.4.2
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-
-- name: Ensure sysctl net.ipv4.icmp_echo_ignore_broadcasts is set
-  sysctl:
-    name: net.ipv4.icmp_echo_ignore_broadcasts
-    value: '{{ sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value }}'
-    sysctl_file: /etc/sysctl.conf
-    state: present
-    reload: true
-  when:
-  - DISA_STIG_RHEL_07_040630 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_icmp_echo_ignore_broadcasts | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80165-4
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040630
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-5
-  - PCI-DSS-Req-1.4.3
-  - PCI-DSSv4-1.4.2
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-
-- name: List /etc/sysctl.d/*.conf files
-  find:
-    paths:
-    - /etc/sysctl.d/
-    - /run/sysctl.d/
-    - /usr/local/lib/sysctl.d/
-    contains: ^[\s]*net.ipv4.tcp_syncookies.*$
-    patterns: '*.conf'
-    file_type: any
-  register: find_sysctl_d
-  when:
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_tcp_syncookies | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-27495-1
-  - CJIS-5.10.1.1
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-5(1)
-  - NIST-800-53-SC-5(2)
-  - NIST-800-53-SC-5(3)(a)
-  - PCI-DSS-Req-1.4.1
-  - PCI-DSSv4-1.4.3
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_tcp_syncookies
-
-- name: Comment out any occurrences of net.ipv4.tcp_syncookies from config files
-  replace:
-    path: '{{ item.path }}'
-    regexp: ^[\s]*net.ipv4.tcp_syncookies
-    replace: '#net.ipv4.tcp_syncookies'
-  loop: '{{ find_sysctl_d.files }}'
-  when:
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_tcp_syncookies | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-27495-1
-  - CJIS-5.10.1.1
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-5(1)
-  - NIST-800-53-SC-5(2)
-  - NIST-800-53-SC-5(3)(a)
-  - PCI-DSS-Req-1.4.1
-  - PCI-DSSv4-1.4.3
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_tcp_syncookies
-
-- name: Ensure sysctl net.ipv4.tcp_syncookies is set
-  sysctl:
-    name: net.ipv4.tcp_syncookies
-    value: '{{ sysctl_net_ipv4_tcp_syncookies_value }}'
-    sysctl_file: /etc/sysctl.conf
-    state: present
-    reload: true
-  when:
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_tcp_syncookies | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-27495-1
-  - CJIS-5.10.1.1
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-5(1)
-  - NIST-800-53-SC-5(2)
-  - NIST-800-53-SC-5(3)(a)
-  - PCI-DSS-Req-1.4.1
-  - PCI-DSSv4-1.4.3
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_tcp_syncookies
-
-- name: List /etc/sysctl.d/*.conf files
-  find:
-    paths:
-    - /etc/sysctl.d/
-    - /run/sysctl.d/
-    - /usr/local/lib/sysctl.d/
-    contains: ^[\s]*net.ipv4.conf.all.send_redirects.*$
-    patterns: '*.conf'
-    file_type: any
-  register: find_sysctl_d
-  when:
-  - DISA_STIG_RHEL_07_040660 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_conf_all_send_redirects | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80156-3
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040660
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-5
-  - NIST-800-53-SC-7(a)
-  - PCI-DSSv4-1.4.5
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_conf_all_send_redirects
-
-- name: Comment out any occurrences of net.ipv4.conf.all.send_redirects from config files
-  replace:
-    path: '{{ item.path }}'
-    regexp: ^[\s]*net.ipv4.conf.all.send_redirects
-    replace: '#net.ipv4.conf.all.send_redirects'
-  loop: '{{ find_sysctl_d.files }}'
-  when:
-  - DISA_STIG_RHEL_07_040660 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_conf_all_send_redirects | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80156-3
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040660
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-5
-  - NIST-800-53-SC-7(a)
-  - PCI-DSSv4-1.4.5
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_conf_all_send_redirects
-
-- name: Ensure sysctl net.ipv4.conf.all.send_redirects is set to 0
-  sysctl:
-    name: net.ipv4.conf.all.send_redirects
-    value: '0'
-    sysctl_file: /etc/sysctl.conf
-    state: present
-    reload: true
-  when:
-  - DISA_STIG_RHEL_07_040660 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_conf_all_send_redirects | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80156-3
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040660
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-5
-  - NIST-800-53-SC-7(a)
-  - PCI-DSSv4-1.4.5
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_conf_all_send_redirects
-
-- name: List /etc/sysctl.d/*.conf files
-  find:
-    paths:
-    - /etc/sysctl.d/
-    - /run/sysctl.d/
-    - /usr/local/lib/sysctl.d/
-    contains: ^[\s]*net.ipv4.conf.default.send_redirects.*$
-    patterns: '*.conf'
-    file_type: any
-  register: find_sysctl_d
-  when:
-  - DISA_STIG_RHEL_07_040650 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_conf_default_send_redirects | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80999-6
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040650
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-5
-  - NIST-800-53-SC-7(a)
-  - PCI-DSSv4-1.4.5
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_conf_default_send_redirects
-
-- name: Comment out any occurrences of net.ipv4.conf.default.send_redirects from config files
-  replace:
-    path: '{{ item.path }}'
-    regexp: ^[\s]*net.ipv4.conf.default.send_redirects
-    replace: '#net.ipv4.conf.default.send_redirects'
-  loop: '{{ find_sysctl_d.files }}'
-  when:
-  - DISA_STIG_RHEL_07_040650 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_conf_default_send_redirects | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80999-6
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040650
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-5
-  - NIST-800-53-SC-7(a)
-  - PCI-DSSv4-1.4.5
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_conf_default_send_redirects
-
-- name: Ensure sysctl net.ipv4.conf.default.send_redirects is set to 0
-  sysctl:
-    name: net.ipv4.conf.default.send_redirects
-    value: '0'
-    sysctl_file: /etc/sysctl.conf
-    state: present
-    reload: true
-  when:
-  - DISA_STIG_RHEL_07_040650 | bool
-  - disable_strategy | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - sysctl_net_ipv4_conf_default_send_redirects | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80999-6
-  - CJIS-5.10.1.1
-  - DISA-STIG-RHEL-07-040650
-  - NIST-800-171-3.1.20
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-SC-5
-  - NIST-800-53-SC-7(a)
-  - PCI-DSSv4-1.4.5
-  - disable_strategy
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-  - sysctl_net_ipv4_conf_default_send_redirects
-
-- name: Ensure kernel module 'dccp' is disabled
-  lineinfile:
-    create: true
-    dest: /etc/modprobe.d/dccp.conf
-    regexp: install\s+dccp
-    line: install dccp /bin/false
-  when:
-  - DISA_STIG_RHEL_07_020101 | bool
-  - disable_strategy | bool
-  - kernel_module_dccp_disabled | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-82024-1
-  - CJIS-5.10.1
-  - DISA-STIG-RHEL-07-020101
-  - NIST-800-171-3.4.6
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - PCI-DSS-Req-1.4.2
-  - PCI-DSSv4-1.4.2
-  - disable_strategy
-  - kernel_module_dccp_disabled
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-
-- name: Ensure kernel module 'dccp' is blacklisted
-  lineinfile:
-    create: true
-    dest: /etc/modprobe.d/dccp.conf
-    regexp: ^blacklist dccp$
-    line: blacklist dccp
-  when:
-  - DISA_STIG_RHEL_07_020101 | bool
-  - disable_strategy | bool
-  - kernel_module_dccp_disabled | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-82024-1
-  - CJIS-5.10.1
-  - DISA-STIG-RHEL-07-020101
-  - NIST-800-171-3.4.6
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - PCI-DSS-Req-1.4.2
-  - PCI-DSSv4-1.4.2
-  - disable_strategy
-  - kernel_module_dccp_disabled
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-
-- name: Ensure kernel module 'sctp' is disabled
-  lineinfile:
-    create: true
-    dest: /etc/modprobe.d/sctp.conf
-    regexp: install\s+sctp
-    line: install sctp /bin/false
-  when:
-  - disable_strategy | bool
-  - kernel_module_sctp_disabled | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-82044-9
-  - CJIS-5.10.1
-  - NIST-800-171-3.4.6
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - PCI-DSS-Req-1.4.2
-  - PCI-DSSv4-1.4.2
-  - disable_strategy
-  - kernel_module_sctp_disabled
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-
-- name: Ensure kernel module 'sctp' is blacklisted
-  lineinfile:
-    create: true
-    dest: /etc/modprobe.d/sctp.conf
-    regexp: ^blacklist sctp$
-    line: blacklist sctp
-  when:
-  - disable_strategy | bool
-  - kernel_module_sctp_disabled | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-82044-9
-  - CJIS-5.10.1
-  - NIST-800-171-3.4.6
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - PCI-DSS-Req-1.4.2
-  - PCI-DSSv4-1.4.2
-  - disable_strategy
-  - kernel_module_sctp_disabled
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-
-- name: Ensure kernel module 'bluetooth' is disabled
-  lineinfile:
-    create: true
-    dest: /etc/modprobe.d/bluetooth.conf
-    regexp: install\s+bluetooth
-    line: install bluetooth /bin/false
-  when:
-  - disable_strategy | bool
-  - kernel_module_bluetooth_disabled | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-27327-6
-  - CJIS-5.13.1.3
-  - NIST-800-171-3.1.16
-  - NIST-800-53-AC-18(3)
-  - NIST-800-53-AC-18(a)
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-MP-7
-  - disable_strategy
-  - kernel_module_bluetooth_disabled
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-
-- name: Ensure kernel module 'bluetooth' is blacklisted
-  lineinfile:
-    create: true
-    dest: /etc/modprobe.d/bluetooth.conf
-    regexp: ^blacklist bluetooth$
-    line: blacklist bluetooth
-  when:
-  - disable_strategy | bool
-  - kernel_module_bluetooth_disabled | bool
-  - low_complexity | bool
-  - medium_disruption | bool
-  - medium_severity | bool
-  - reboot_required | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-27327-6
-  - CJIS-5.13.1.3
-  - NIST-800-171-3.1.16
-  - NIST-800-53-AC-18(3)
-  - NIST-800-53-AC-18(a)
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-MP-7
-  - disable_strategy
-  - kernel_module_bluetooth_disabled
-  - low_complexity
-  - medium_disruption
-  - medium_severity
-  - reboot_required
-
-- name: Test for existence /etc/group
-  stat:
-    path: /etc/group
-  register: file_exists
-  tags:
-  - CCE-82037-3
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_groupowner_etc_group
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  when:
-  - configure_strategy | bool
-  - file_groupowner_etc_group | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-
-- name: Ensure group owner 0 on /etc/group
-  file:
-    path: /etc/group
-    group: '0'
-  when:
-  - configure_strategy | bool
-  - file_groupowner_etc_group | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - file_exists.stat is defined and file_exists.stat.exists
-  tags:
-  - CCE-82037-3
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_groupowner_etc_group
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-
-- name: Test for existence /etc/passwd
-  stat:
-    path: /etc/passwd
-  register: file_exists
-  tags:
-  - CCE-26639-5
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_groupowner_etc_passwd
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  when:
-  - configure_strategy | bool
-  - file_groupowner_etc_passwd | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-
-- name: Ensure group owner 0 on /etc/passwd
-  file:
-    path: /etc/passwd
-    group: '0'
-  when:
-  - configure_strategy | bool
-  - file_groupowner_etc_passwd | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - file_exists.stat is defined and file_exists.stat.exists
-  tags:
-  - CCE-26639-5
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_groupowner_etc_passwd
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-
-- name: Test for existence /etc/shadow
-  stat:
-    path: /etc/shadow
-  register: file_exists
-  tags:
-  - CCE-82051-4
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_groupowner_etc_shadow
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  when:
-  - configure_strategy | bool
-  - file_groupowner_etc_shadow | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-
-- name: Ensure group owner 0 on /etc/shadow
-  file:
-    path: /etc/shadow
-    group: '0'
-  when:
-  - configure_strategy | bool
-  - file_groupowner_etc_shadow | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - file_exists.stat is defined and file_exists.stat.exists
-  tags:
-  - CCE-82051-4
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_groupowner_etc_shadow
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-
-- name: Test for existence /etc/group
-  stat:
-    path: /etc/group
-  register: file_exists
-  tags:
-  - CCE-82031-6
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_owner_etc_group
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  when:
-  - configure_strategy | bool
-  - file_owner_etc_group | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-
-- name: Ensure owner 0 on /etc/group
-  file:
-    path: /etc/group
-    owner: '0'
-  when:
-  - configure_strategy | bool
-  - file_owner_etc_group | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - file_exists.stat is defined and file_exists.stat.exists
-  tags:
-  - CCE-82031-6
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_owner_etc_group
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-
-- name: Test for existence /etc/passwd
-  stat:
-    path: /etc/passwd
-  register: file_exists
-  tags:
-  - CCE-82052-2
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_owner_etc_passwd
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  when:
-  - configure_strategy | bool
-  - file_owner_etc_passwd | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-
-- name: Ensure owner 0 on /etc/passwd
-  file:
-    path: /etc/passwd
-    owner: '0'
-  when:
-  - configure_strategy | bool
-  - file_owner_etc_passwd | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - file_exists.stat is defined and file_exists.stat.exists
-  tags:
-  - CCE-82052-2
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_owner_etc_passwd
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-
-- name: Test for existence /etc/shadow
-  stat:
-    path: /etc/shadow
-  register: file_exists
-  tags:
-  - CCE-82022-5
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_owner_etc_shadow
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  when:
-  - configure_strategy | bool
-  - file_owner_etc_shadow | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-
-- name: Ensure owner 0 on /etc/shadow
-  file:
-    path: /etc/shadow
-    owner: '0'
-  when:
-  - configure_strategy | bool
-  - file_owner_etc_shadow | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - file_exists.stat is defined and file_exists.stat.exists
-  tags:
-  - CCE-82022-5
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_owner_etc_shadow
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-
-- name: Test for existence /etc/group
-  stat:
-    path: /etc/group
-  register: file_exists
-  tags:
-  - CCE-82032-4
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_permissions_etc_group
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  when:
-  - configure_strategy | bool
-  - file_permissions_etc_group | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-
-- name: Ensure permission u-xs,g-xws,o-xwt on /etc/group
-  file:
-    path: /etc/group
-    mode: u-xs,g-xws,o-xwt
-  when:
-  - configure_strategy | bool
-  - file_permissions_etc_group | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - file_exists.stat is defined and file_exists.stat.exists
-  tags:
-  - CCE-82032-4
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_permissions_etc_group
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-
-- name: Test for existence /etc/passwd
-  stat:
-    path: /etc/passwd
-  register: file_exists
-  tags:
-  - CCE-82029-0
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_permissions_etc_passwd
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  when:
-  - configure_strategy | bool
-  - file_permissions_etc_passwd | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-
-- name: Ensure permission u-xs,g-xws,o-xwt on /etc/passwd
-  file:
-    path: /etc/passwd
-    mode: u-xs,g-xws,o-xwt
-  when:
-  - configure_strategy | bool
-  - file_permissions_etc_passwd | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - file_exists.stat is defined and file_exists.stat.exists
-  tags:
-  - CCE-82029-0
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_permissions_etc_passwd
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-
-- name: Test for existence /etc/shadow
-  stat:
-    path: /etc/shadow
-  register: file_exists
-  tags:
-  - CCE-82042-3
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_permissions_etc_shadow
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  when:
-  - configure_strategy | bool
-  - file_permissions_etc_shadow | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-
-- name: Ensure permission u-xwrs,g-xwrs,o-xwrt on /etc/shadow
-  file:
-    path: /etc/shadow
-    mode: u-xwrs,g-xwrs,o-xwrt
-  when:
-  - configure_strategy | bool
-  - file_permissions_etc_shadow | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - file_exists.stat is defined and file_exists.stat.exists
-  tags:
-  - CCE-82042-3
-  - CJIS-5.5.2.2
-  - NIST-800-53-AC-6(1)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-8.7.c
-  - PCI-DSSv4-2.2.6
-  - configure_strategy
-  - file_permissions_etc_shadow
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-
-- name: Set SSH Client Alive Count Max to zero
-  block:
-  - name: Check for duplicate values
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*ClientAliveCountMax\s+
-      state: absent
-    check_mode: true
-    changed_when: false
-    register: dupes
-  - name: Deduplicate values from /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*ClientAliveCountMax\s+
-      state: absent
-    when: dupes.found is defined and dupes.found > 1
-  - name: Insert correct line to /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*ClientAliveCountMax\s+
-      line: ClientAliveCountMax 0
-      state: present
-      insertbefore: BOF
-      validate: /usr/sbin/sshd -t -f %s
-  when:
-  - DISA_STIG_RHEL_07_040340 | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - sshd_set_keepalive_0 | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-83399-6
-  - CJIS-5.5.6
-  - DISA-STIG-RHEL-07-040340
-  - NIST-800-171-3.1.11
-  - NIST-800-53-AC-12
-  - NIST-800-53-AC-17(a)
-  - NIST-800-53-AC-2(5)
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-SC-10
-  - PCI-DSS-Req-8.1.8
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
-  - sshd_set_keepalive_0
-
-- name: Set SSH Client Alive Interval
-  block:
-  - name: Check for duplicate values
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*ClientAliveInterval\s+
-      state: absent
-    check_mode: true
-    changed_when: false
-    register: dupes
-  - name: Deduplicate values from /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*ClientAliveInterval\s+
-      state: absent
-    when: dupes.found is defined and dupes.found > 1
-  - name: Insert correct line to /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*ClientAliveInterval\s+
-      line: ClientAliveInterval {{ sshd_idle_timeout_value }}
-      state: present
-      insertbefore: BOF
-      validate: /usr/sbin/sshd -t -f %s
-  when:
-  - DISA_STIG_RHEL_07_040320 | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - sshd_set_idle_timeout | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  - ansible_distribution == 'RedHat' and ansible_distribution_version is version('8.5', '<=')
-  tags:
-  - CCE-27433-2
-  - CJIS-5.5.6
-  - DISA-STIG-RHEL-07-040320
-  - NIST-800-171-3.1.11
-  - NIST-800-53-AC-12
-  - NIST-800-53-AC-17(a)
-  - NIST-800-53-AC-17(a)
-  - NIST-800-53-AC-2(5)
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-SC-10
-  - PCI-DSS-Req-8.1.8
-  - PCI-DSSv4-8.2.8
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
-  - sshd_set_idle_timeout
-
-- name: Disable Host-Based Authentication
-  block:
-  - name: Check for duplicate values
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*HostbasedAuthentication\s+
-      state: absent
-    check_mode: true
-    changed_when: false
-    register: dupes
-  - name: Deduplicate values from /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*HostbasedAuthentication\s+
-      state: absent
-    when: dupes.found is defined and dupes.found > 1
-  - name: Insert correct line to /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*HostbasedAuthentication\s+
-      line: HostbasedAuthentication no
-      state: present
-      insertbefore: BOF
-      validate: /usr/sbin/sshd -t -f %s
-  when:
-  - DISA_STIG_RHEL_07_010470 | bool
-  - disable_host_auth | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-27413-4
-  - CJIS-5.5.6
-  - DISA-STIG-RHEL-07-010470
-  - NIST-800-171-3.1.12
-  - NIST-800-53-AC-17(a)
-  - NIST-800-53-AC-3
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - PCI-DSSv4-8.3.1
-  - disable_host_auth
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
-
-- name: Enable SSH Server firewalld Firewall Exception - Ensure firewalld and NetworkManager packages are installed
-  ansible.builtin.package:
-    name: '{{ item }}'
-    state: present
-  with_items:
-  - firewalld
-  - NetworkManager
-  when:
-  - configure_strategy | bool
-  - firewalld_sshd_port_enabled | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80361-9
-  - NIST-800-171-3.1.12
-  - NIST-800-53-AC-17(a)
-  - NIST-800-53-CM-6(b)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - configure_strategy
-  - firewalld_sshd_port_enabled
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-
-- name: Enable SSH Server firewalld Firewall Exception - Collect facts about system services
-  ansible.builtin.service_facts: null
-  register: result_services_states
-  when:
-  - configure_strategy | bool
-  - firewalld_sshd_port_enabled | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80361-9
-  - NIST-800-171-3.1.12
-  - NIST-800-53-AC-17(a)
-  - NIST-800-53-CM-6(b)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - configure_strategy
-  - firewalld_sshd_port_enabled
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-
-- name: Enable SSH Server firewalld Firewall Exception - Remediation is applicable if firewalld and NetworkManager services
-    are running
-  block:
-  - name: Enable SSH Server firewalld Firewall Exception - Collect NetworkManager connections names
-    ansible.builtin.shell:
-      cmd: nmcli -f UUID,TYPE con | grep ethernet | awk '{ print $1 }'
-    register: result_nmcli_cmd_connections_names
-    changed_when: false
-  - name: Enable SSH Server firewalld Firewall Exception - Collect NetworkManager connections zones
-    ansible.builtin.shell:
-      cmd: nmcli -f connection.zone connection show {{ item | trim }} | awk '{ print $2}'
-    register: result_nmcli_cmd_connections_zones
-    changed_when: false
-    with_items:
-    - '{{ result_nmcli_cmd_connections_names.stdout_lines }}'
-  - name: Enable SSH Server firewalld Firewall Exception - Ensure NetworkManager connections are assigned to a firewalld zone
-    ansible.builtin.command:
-      cmd: nmcli connection modify {{ item.0 }} connection.zone {{ firewalld_sshd_zone }}
-    register: result_nmcli_cmd_connections_assignment
-    with_together:
-    - '{{ result_nmcli_cmd_connections_names.stdout_lines }}'
-    - '{{ result_nmcli_cmd_connections_zones.results }}'
-    when:
-    - item.1.stdout == '--'
-  - name: Enable SSH Server firewalld Firewall Exception - Ensure NetworkManager connections changes are applied
-    ansible.builtin.service:
-      name: NetworkManager
-      state: restarted
-    when:
-    - result_nmcli_cmd_connections_assignment is changed
-  - name: Enable SSH Server firewalld Firewall Exception - Collect firewalld active zones
-    ansible.builtin.shell:
-      cmd: firewall-cmd --get-active-zones | grep -v interfaces
-    register: result_firewall_cmd_zones_names
-    changed_when: false
-  - name: Enable SSH Server firewalld Firewall Exception - Ensure firewalld zones allow SSH
-    ansible.builtin.command:
-      cmd: firewall-cmd --permanent --zone={{ item }} --add-service=ssh
-    register: result_nmcli_cmd_connections_assignment
-    changed_when:
-    - '''ALREADY_ENABLED'' not in result_nmcli_cmd_connections_assignment.stderr'
-    with_items:
-    - '{{ result_firewall_cmd_zones_names.stdout_lines }}'
-  - name: Enable SSH Server firewalld Firewall Exception - Ensure firewalld changes are applied
-    ansible.builtin.service:
-      name: firewalld
-      state: reloaded
-    when:
-    - result_nmcli_cmd_connections_assignment is changed
-  when:
-  - configure_strategy | bool
-  - firewalld_sshd_port_enabled | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  - ansible_facts.services['firewalld.service'].state == 'running'
-  - ansible_facts.services['NetworkManager.service'].state == 'running'
-  tags:
-  - CCE-80361-9
-  - NIST-800-171-3.1.12
-  - NIST-800-53-AC-17(a)
-  - NIST-800-53-CM-6(b)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - configure_strategy
-  - firewalld_sshd_port_enabled
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-
-- name: Enable SSH Server firewalld Firewall Exception - Informative message based on services states
-  ansible.builtin.assert:
-    that:
-    - ansible_facts.services['firewalld.service'].state == 'running'
-    - ansible_facts.services['NetworkManager.service'].state == 'running'
-    fail_msg:
-    - firewalld and NetworkManager services are not active. Remediation aborted!
-    - This remediation could not be applied because it depends on firewalld and NetworkManager services running.
-    - The service is not started by this remediation in order to prevent connection issues.
-    success_msg:
-    - Enable SSH Server firewalld Firewall Exception remediation successfully executed
-  when:
-  - configure_strategy | bool
-  - firewalld_sshd_port_enabled | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-80361-9
-  - NIST-800-171-3.1.12
-  - NIST-800-53-AC-17(a)
-  - NIST-800-53-CM-6(b)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - configure_strategy
-  - firewalld_sshd_port_enabled
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-
-- name: Allow Only SSH Protocol 2
-  block:
-  - name: Check for duplicate values
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*Protocol\s+
-      state: absent
-    check_mode: true
-    changed_when: false
-    register: dupes
-  - name: Deduplicate values from /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*Protocol\s+
-      state: absent
-    when: dupes.found is defined and dupes.found > 1
-  - name: Insert correct line to /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*Protocol\s+
-      line: Protocol 2
-      state: present
-      insertbefore: BOF
-      validate: /usr/sbin/sshd -t -f %s
-  when:
-  - DISA_STIG_RHEL_07_040390 | bool
-  - high_severity | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - sshd_allow_only_protocol2 | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-27320-1
-  - CJIS-5.5.6
-  - DISA-STIG-RHEL-07-040390
-  - NIST-800-171-3.1.13
-  - NIST-800-171-3.5.4
-  - NIST-800-53-AC-17(2)
-  - NIST-800-53-AC-17(a)
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-IA-5(1)(c)
-  - NIST-800-53-MA-4(6)
-  - NIST-800-53-SC-13
-  - high_severity
-  - low_complexity
-  - low_disruption
-  - no_reboot_needed
-  - restrict_strategy
-  - sshd_allow_only_protocol2
-
-- name: Disable SSH Access via Empty Passwords
-  block:
-  - name: Check for duplicate values
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*PermitEmptyPasswords\s+
-      state: absent
-    check_mode: true
-    changed_when: false
-    register: dupes
-  - name: Deduplicate values from /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*PermitEmptyPasswords\s+
-      state: absent
-    when: dupes.found is defined and dupes.found > 1
-  - name: Insert correct line to /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*PermitEmptyPasswords\s+
-      line: PermitEmptyPasswords no
-      state: present
-      insertbefore: BOF
-      validate: /usr/sbin/sshd -t -f %s
-  when:
-  - DISA_STIG_RHEL_07_010300 | bool
-  - high_severity | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - sshd_disable_empty_passwords | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-27471-2
-  - CJIS-5.5.6
-  - DISA-STIG-RHEL-07-010300
-  - NIST-800-171-3.1.1
-  - NIST-800-171-3.1.5
-  - NIST-800-53-AC-17(a)
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - PCI-DSS-Req-2.2.4
-  - PCI-DSSv4-2.2.6
-  - high_severity
-  - low_complexity
-  - low_disruption
-  - no_reboot_needed
-  - restrict_strategy
-  - sshd_disable_empty_passwords
-
-- name: Disable SSH Root Login
-  block:
-  - name: Check for duplicate values
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*PermitRootLogin\s+
-      state: absent
-    check_mode: true
-    changed_when: false
-    register: dupes
-  - name: Deduplicate values from /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*PermitRootLogin\s+
-      state: absent
-    when: dupes.found is defined and dupes.found > 1
-  - name: Insert correct line to /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*PermitRootLogin\s+
-      line: PermitRootLogin no
-      state: present
-      insertbefore: BOF
-      validate: /usr/sbin/sshd -t -f %s
-  when:
-  - DISA_STIG_RHEL_07_040370 | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - sshd_disable_root_login | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-27445-6
-  - CJIS-5.5.6
-  - DISA-STIG-RHEL-07-040370
-  - NIST-800-171-3.1.1
-  - NIST-800-171-3.1.5
-  - NIST-800-53-AC-17(a)
-  - NIST-800-53-AC-6(2)
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - NIST-800-53-IA-2
-  - NIST-800-53-IA-2(5)
-  - PCI-DSS-Req-2.2.4
-  - PCI-DSSv4-2.2.6
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
-  - sshd_disable_root_login
-
-- name: Do Not Allow SSH Environment Options
-  block:
-  - name: Check for duplicate values
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*PermitUserEnvironment\s+
-      state: absent
-    check_mode: true
-    changed_when: false
-    register: dupes
-  - name: Deduplicate values from /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*PermitUserEnvironment\s+
-      state: absent
-    when: dupes.found is defined and dupes.found > 1
-  - name: Insert correct line to /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*PermitUserEnvironment\s+
-      line: PermitUserEnvironment no
-      state: present
-      insertbefore: BOF
-      validate: /usr/sbin/sshd -t -f %s
-  when:
-  - DISA_STIG_RHEL_07_010460 | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - sshd_do_not_permit_user_env | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-27363-1
-  - CJIS-5.5.6
-  - DISA-STIG-RHEL-07-010460
-  - NIST-800-171-3.1.12
-  - NIST-800-53-AC-17(a)
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-CM-7(a)
-  - NIST-800-53-CM-7(b)
-  - PCI-DSS-Req-2.2.4
-  - PCI-DSSv4-2.2.6
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
-  - sshd_do_not_permit_user_env
-
-- name: Enable SSH Warning Banner
-  block:
-  - name: Check for duplicate values
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*Banner\s+
-      state: absent
-    check_mode: true
-    changed_when: false
-    register: dupes
-  - name: Deduplicate values from /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*Banner\s+
-      state: absent
-    when: dupes.found is defined and dupes.found > 1
-  - name: Insert correct line to /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*Banner\s+
-      line: Banner /etc/issue
-      state: present
-      insertbefore: BOF
-      validate: /usr/sbin/sshd -t -f %s
-  when:
-  - DISA_STIG_RHEL_07_040170 | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - sshd_enable_warning_banner | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-27314-4
-  - CJIS-5.5.6
-  - DISA-STIG-RHEL-07-040170
-  - NIST-800-171-3.1.9
-  - NIST-800-53-AC-17(a)
-  - NIST-800-53-AC-8(a)
-  - NIST-800-53-AC-8(c)
-  - NIST-800-53-CM-6(a)
-  - PCI-DSS-Req-2.2.4
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
-  - sshd_enable_warning_banner
-
-- name: Use Only FIPS 140-2 Validated Ciphers
-  block:
-  - name: Check for duplicate values
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*Ciphers\s+
-      state: absent
-    check_mode: true
-    changed_when: false
-    register: dupes
-  - name: Deduplicate values from /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*Ciphers\s+
-      state: absent
-    when: dupes.found is defined and dupes.found > 1
-  - name: Insert correct line to /etc/ssh/sshd_config
-    lineinfile:
-      path: /etc/ssh/sshd_config
-      create: true
-      regexp: (?i)^\s*Ciphers\s+
-      line: Ciphers {{ sshd_approved_ciphers }}
-      state: present
-      insertbefore: BOF
-      validate: /usr/sbin/sshd -t -f %s
-  when:
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - sshd_use_approved_ciphers | bool
-  - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
-  tags:
-  - CCE-27295-5
-  - CJIS-5.5.6
-  - NIST-800-171-3.1.13
-  - NIST-800-171-3.13.11
-  - NIST-800-171-3.13.8
-  - NIST-800-53-AC-17(2)
-  - NIST-800-53-AC-17(a)
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-IA-5(1)(c)
-  - NIST-800-53-MA-4(6)
-  - NIST-800-53-SC-12(2)
-  - NIST-800-53-SC-12(3)
-  - NIST-800-53-SC-13
-  - PCI-DSSv4-2.2.7
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
-  - sshd_use_approved_ciphers
